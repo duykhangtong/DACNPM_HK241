@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models/index');
+const config = require('../config/auth.config');
 const User = db.user;
 
-const signin = (req, res, next) => {
+const signin = (req, res) => {
     User.findOne({ email: req.body.email })
         .then((user) => {
 
@@ -15,14 +16,14 @@ const signin = (req, res, next) => {
                 return res.status(401).send({ accessToken: null, message: 'Invalid Password!' });
             }
 
-            const token = jwt.sign({ id: user._id }, 'SSPS', { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: 86400, });
+            const token = jwt.sign({ id: user._id }, config.secret, { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: 86400, });
 
+            req.session.token = token;
             res.status(200).send({
                 id: user._id,
                 fullName: user.fullName,
                 email: user.email,
-                role: user.role,
-                accessToken: token
+                role: user.role
             });
         })
         .catch(err => {
@@ -31,4 +32,13 @@ const signin = (req, res, next) => {
         });
 };
 
-module.exports = { signin };
+const signout = async (req, res) => {
+    try {
+        req.session = null;
+        return res.status(200).send("you've been signed out!!!");
+    } catch (err) {
+        this.next(err);
+    }
+}
+
+module.exports = { signin, signout };

@@ -1,15 +1,16 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models/index');
+const config = require('../config/auth.config');
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-    let token = req.headers['x-access-token'];
+    let token = req.session.token;
 
     if (!token) {
         return res.status(403).send({ message: 'No token provided!' });
     }
 
-    jwt.verify(token, 'SSPS', (err, decode) => {
+    jwt.verify(token, config.secret, (err, decode) => {
         if (err) {
             return res.status(401).send({ message: 'Unauthorized!' });
         }
