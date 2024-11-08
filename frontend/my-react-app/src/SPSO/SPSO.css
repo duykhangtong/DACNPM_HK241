@@ -1,0 +1,97 @@
+*
+{
+    box-sizing: border-box;
+}
+.SPSO-navbar-row
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    width: 100%;
+    padding: 0px 30px;
+}
+.SPSO-logo
+{
+    height: 60%;
+    width: 10%;
+    /* margin: 0px 40px; */
+    float: left;
+   font-size: 22px;
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #179AF1;
+    border-radius: 20px;
+    color:white;
+    font-weight: 500;
+    font-family: "Inknut Antiqua", serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.SPSO-rightnavbar
+{
+    width: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    float: right;
+    size: 20px;
+}
+.SPSO-user
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+.SPSO-user:hover
+{
+    cursor: pointer;
+}
+.SPSO-faComment 
+{
+    font-size: 22px;
+    
+}
+.SPSO-faBell
+{
+    font-size: 22px;
+}
+.SPSO-faUser
+{
+    font-size: 22px;
+    margin-right: 5px;
+}
+.SPSO-Body
+{
+    display: flex;
+}
+.SPSO-navbar-col
+{
+    width: 20%;
+    display: grid;
+    grid-template-rows: auto;
+    gap:0px;
+}
+.SPSO-function
+{
+display: grid;
+grid-template-columns: 20% 80%;
+gap: 10px;
+padding-left: 20px;
+}
+.SPSO-function div
+{
+    display: inline-flex;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 200;
+    letter-spacing: 1px;
+}
+/* .SPSO-function p
+{
+    float: left;
+} */
