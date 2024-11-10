@@ -1,0 +1,357 @@
+*
+{
+    box-sizing: border-box;
+}
+
+
+
+.tt-advertise-container {
+   width: 100%;
+   height: 600px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+/* .tt-background-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    filter: blur(5px);
+} */
+
+.tt-advertise-content {
+    /* position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-image: url('../../../Image/Group 18.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60%;
+    height: 80%;
+    padding: 20px; */
+    display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 60px;
+    width: 70%;
+    position: relative;
+    height: 90%;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-image: url('../../../Image/image 14.jpg'); */
+    background: linear-gradient(45deg, #c8c3c5, #0388b3);
+    z-index: 1;
+    background-repeat: no-repeat; /* Prevents the background from repeating */
+    background-size: cover; /* Adjusts the background image to cover the container */
+}
+.tt-image-section {
+    display: grid;
+    grid-template-rows: 40% 10% 10% 20%;
+    height: 100%;
+    width: 60%;
+    gap:20px;
+    padding: 20px 40px;
+    font-weight: 600;
+  }
+.img_advertise
+{
+    position: relative;
+    z-index: 2;
+   
+    background-image: url('../../../Image/Group 17.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 70%;
+    height: 80%;
+    border-radius: 20px;
+}
+.tt-text-section {
+    display: inline;
+ 
+}
+
+.tt-text-section h2 {
+    font-family: "Inspiration", cursive;
+    font-size: 6rem;
+    margin: 0;
+    color: #000;
+    font-weight: 500;
+    float: left;
+    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tt-discount {
+    font-size: 1.8rem;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.tt-discount p {
+    font-family: "Inknut Antiqua", serif;
+    font-weight: 600;
+    font-style: normal;
+    position: absolute;
+    z-index: 2;
+    color: black;
+}
+.star {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background-color: #FFA500; /* Yellow color for the star */
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 
+        68% 57%, 79% 91%, 50% 70%, 
+        21% 91%, 32% 57%, 2% 35%, 
+        39% 35%
+    );
+}
+
+.star-1 {
+    transform: rotate(0deg);
+    z-index: 1;
+}
+
+.star-2 {
+    transform: rotate(45deg);
+    z-index: 1;
+}
+.tt-highlight {
+    color: red;
+    font-weight: bold;
+    font-size: 25px;
+}
+.tt-register
+{
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+   display: flex;
+   justify-content: left;
+   align-items: center;
+   padding-left: 20px;
+}
+.tt-register-button {
+    background-color: #F4AE12;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: "Alkatra", serif;
+    font-weight: bold;
+    /* font-style: regular; */
+    width: 70%;
+    height: 85%;
+   letter-spacing: 2px;
+   text-align: center;
+   padding: 0px;
+}
+
+.tt-foreground-img {
+    width: 80%;
+    height: 80%;
+    /* object-fit: cover; */
+
+    z-index: 2;
+}
+.tt-containerAngle
+{
+    width: 40px;
+    height: 40px;
+   background-color: rgb(233, 232, 231);
+   z-index: 2;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.tt-faAngleLeft,
+.tt-faAngleRight {
+    /* position: absolute; */
+    font-size: 24px;
+    color: #0b2bb5;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.tt-faAngleLeft {
+    left: 10px;
+}
+
+.tt-faAngleRight {
+    right: 10px;
+}
+
+.tt-container_guide
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    width: 100%;
+    padding: 0px 40px;
+    margin: 100px 0px;
+    gap:40px;
+}
+.tt-card
+{
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding-bottom: 40px;
+}
+.tt-top_container.first
+{
+    width: 100%;
+    background: linear-gradient(45deg, #09da3d, #d8d6e2);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+}
+.tt-img.first
+{
+    background-image: url('../../../Image/cute-img.jpg');
+    z-index: 2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 130px;
+    height: 130px;
+    /* position: absolute; 
+    transform: translate(50%, 50%); */
+    transform: translateY(50%);
+    border-radius: 50%;
+}
+.tt-header-card.first
+{
+    margin-top: 120px;
+    text-align: center;
+    color: #09da3d;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.tt-content-card.first
+{
+    margin-bottom: 30px;
+}
+.tt-content-card p
+{
+font-size: 14px;
+text-align: center;
+}
+.tt-card button
+{
+    width: 100px;
+    height: 50px;
+    margin: auto;
+    border-radius: 10px;
+    background-color: #0388b3;
+    color: white;
+   
+}
+.tt-top_container.second
+{
+    width: 100%;
+    background: linear-gradient(45deg, #da096b, #d8d6e2);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+    
+}
+.tt-img.second
+{
+    background-image: url('../../../Image/cute2-img.jpg');
+    z-index: 2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 130px;
+    height: 130px;
+    /* position: absolute; 
+    transform: translate(50%, 50%); */
+    transform: translateY(50%);
+    border-radius: 50%;
+}
+.tt-header-card.second
+{
+    margin-top: 120px;
+    text-align: center;
+    color: #da096b;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.tt-content-card.second
+{
+    margin-bottom: 30px;
+}
+
+
+
+
+
+
+
+.tt-top_container.third
+{
+    width: 100%;
+    background: linear-gradient(45deg, #3a09da, #d8d6e2);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+    
+}
+.tt-img.third
+{
+    background-image: url('../../../Image/cute3-img.jpg');
+    z-index: 2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 130px;
+    height: 130px;
+    /* position: absolute; 
+    transform: translate(50%, 50%); */
+    transform: translateY(50%);
+    border-radius: 50%;
+}
+.tt-header-card.third
+{
+    margin-top: 120px;
+    text-align: center;
+    color: #3a09da;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.tt-content-card.third
+{
+    margin-bottom: 30px;
+}
