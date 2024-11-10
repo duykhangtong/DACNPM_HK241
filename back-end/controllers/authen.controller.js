@@ -2,9 +2,11 @@ const jwt = require('jsonwebtoken');
 const db = require('../models/index');
 const config = require('../config/auth.config');
 const User = db.user;
+const Client = db.client;
+const Spso = db.spso;
 
-const signin = (req, res) => {
-    User.findOne({ email: req.body.email })
+const signin = async (req, res) => {
+    await User.findOne({ email: req.body.email })
         .then((user) => {
 
             if (!user) {
@@ -19,12 +21,21 @@ const signin = (req, res) => {
             const token = jwt.sign({ id: user._id }, config.secret, { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: 86400, });
 
             req.session.token = token;
-            res.status(200).send({
-                id: user._id,
-                fullName: user.fullName,
-                email: user.email,
-                role: user.role
-            });
+
+            if (user.role_type === "client") {
+                Client.findByIdAndUpdate(user.role, { last_login: Date.now() })
+                    .then(client => res.send({
+                        full_name: client.full_name,
+                        number_page: client.number_page,
+                        last_login: client.last_login
+                    }))
+            } else {
+                Spso.findByIdAndUpdate(user.role, { last_login: Date.now() })
+                    .then(spso => res.send({
+                        full_name: spso.full_name,
+                        last_login: spso.last_login
+                    }))
+            }
         })
         .catch(err => {
             res.status(500).send({ message: err });

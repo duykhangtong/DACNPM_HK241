@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken');
 const db = require('../models/index');
 const config = require('../config/auth.config');
 const User = db.user;
+const Client = db.client;
+const Spso = db.spso;
 
-verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
     let token = req.session.token;
 
     if (!token) {
@@ -19,10 +21,11 @@ verifyToken = (req, res, next) => {
     });
 };
 
-isAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     User.findById(req.userId)
         .then((user) => {
-            if (user.role === "admin") {
+            if (user.role_type === "admin") {
+                Spso.updateOne({ _id: user.role }, { last_login: Date.now() });
                 next();
                 return;
             }
@@ -31,5 +34,6 @@ isAdmin = (req, res, next) => {
         })
         .catch(err => res.status(500).send({ message: err }));
 }
+
 
 module.exports = { verifyToken, isAdmin };
