@@ -13,7 +13,7 @@ initWebRouter = (app) => {
         res.send('Hello World!!');
     })
 
-    return app.use('/api', router);
+    return app.use('/api/v1', router);
 }
 
 module.exports = initWebRouter;
