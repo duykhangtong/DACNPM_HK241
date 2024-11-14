@@ -8,13 +8,13 @@ const create = (req, res, next) => {
         .catch(err => next(err));
 }
 
-const showAll = (req, res, next) => {
+const getAll = (req, res, next) => {
     Document.find({})
         .then((documents) => { res.status(200).json(documents) })
         .catch(err => next(err));
 }
 
-const showById = (req, res, next) => {
+const getById = (req, res, next) => {
     Document.findById(req.params.id)
         .then(document => res.status(200).json(document))
         .catch(err => next(err));
@@ -27,4 +27,4 @@ const removeById = (req, res, next) => {
         .catch(err => next(err));
 }
 
-module.exports = { create, showAll, showById, removeById };
+module.exports = { create, getAll, getById, removeById };

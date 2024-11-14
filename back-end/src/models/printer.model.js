@@ -5,6 +5,9 @@ const printer = new mongoose.Schema({
     brand: String,
     machine_model: String,
     state: Boolean,
+    campus: String,
+    building: String,
+    room: String,
 })
 
 module.exports = mongoose.model('Printer', printer);

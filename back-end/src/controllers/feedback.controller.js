@@ -9,13 +9,13 @@ const create = (req, res, next) => {
         .catch(err => next(err));
 }
 
-const showAll = (req, res, next) => {
+const getAll = (req, res, next) => {
     Feedback.find({})
         .then((feedbacks) => { res.status(200).json(feedbacks) })
         .catch(err => next(err));
 }
 
-const showById = (req, res, next) => {
+const getById = (req, res, next) => {
     Feedback.findById(req.params.id)
         .then(feedback => res.status(200).json(feedback))
         .catch(err => next(err));
@@ -30,4 +30,4 @@ const update = (req, res, next) => {
 }
 
 
-module.exports = { create, showAll, showById, update };
+module.exports = { create, getAll, getById, update };
