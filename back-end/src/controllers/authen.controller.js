@@ -23,14 +23,14 @@ const signin = async (req, res) => {
             req.session.token = token;
 
             if (user.role_type === "client") {
-                Client.findByIdAndUpdate(user.role, { last_login: Date.now() })
+                Client.findByIdAndUpdate(user.role, { last_login: Date.now() }, { returnDocument: 'after' })
                     .then(client => res.send({
                         full_name: client.full_name,
                         number_page: client.number_page,
                         last_login: client.last_login
                     }))
             } else {
-                Spso.findByIdAndUpdate(user.role, { last_login: Date.now() })
+                Spso.findByIdAndUpdate(user.role, { last_login: Date.now() }, { returnDocument: 'after' })
                     .then(spso => res.send({
                         full_name: spso.full_name,
                         last_login: spso.last_login
