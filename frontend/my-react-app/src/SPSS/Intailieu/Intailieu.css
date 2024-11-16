@@ -15,6 +15,10 @@
     align-items: center;
     justify-content: center;
 }
+.prt-file_list
+{
+    display: none;
+}
 .tt-container_upload
 {
     width:60%;
@@ -23,12 +27,112 @@
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 25px;
+    
+}
+.tt-container_upload.active
+{
+    display: flex;
+    flex-direction: row; /* Ensures children stack vertically if needed */
+    width: 90%;
+
+}
+.tt-container_uploadleft.active
+{
+    flex: 1.5;
+}
+
+.prt-file_list.active
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    flex: 1;
+    /* padding-top: 50px; */
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; 
+    opacity: 0.8;
+    /* border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px; */
+    border-radius: 5px;
+    padding: 20px;
+    display: block;
+    position: relative;
+}
+.prt-file_list h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+    color: #333;
+    border-radius: 5px;
+    background-color: aqua;
+}
+.file-item
+{
+    display: flex;
+    align-items: center;
+    float: left;
+    gap: 10px;
+    height: 50px;
+    width: 100%;
+    font-size: 10px;
+    margin-top: 30px;
+    padding: 0px 10px;
+}
+.file-item:hover
+{
+    background-color: #f1f1f1;
+}
+.file-item button
+{
+    
+    cursor: pointer;
+    height: 100%;
+    width: 80px;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+button.watchingdetails {
+    background-color: #4caf50;
+    color: #fff;
+}
+button.configuration {
+    background-color: #2196f3;
+    color: #fff;
+}
+
+button.delete {
+    background-color: #f44336;
+    color: #fff;
+}
+.file-item img
+{
+    width: 45px;
+    height: 45px;
+}
+.file-name
+{
+    
+    font-size: 15px;
+    width: 60%;
+    text-align: left;
+    color: #000000;
+}
+.tt-container_uploadleft
+{
     display: grid;
     grid-template-rows: 10% 5% 70%;
     gap: 20px;
     padding: 20px 50px;
-    
+    width: 100%;
+    height: 100%;
 }
+
 .tt-container_upload header
 {
     font-family: "Source Serif 4", serif;
@@ -80,8 +184,8 @@ input[type="file"] {
 }
 .prt-labelDrag img
 {
-    width: 100px;
-    height: 100px;
+    width: 21%;
+    height: 30%;
 }
 .prt-uploadtext {
     font-size: 16px;
@@ -96,3 +200,197 @@ input[type="file"] {
     color: #ffffff;
     font-weight: 100;
 }
+.container-accept-printing
+{
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+}
+.accept-printing
+{
+    width: 90px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background-color: #0d64c1;
+    color: white;
+    z-index: 5;
+}
+.container-file
+{
+    max-height: 65%;
+    overflow-y: auto; 
+}
+
+
+
+/* Overlay to dim the background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it is on top of other elements */
+  }
+  
+  /* Modal content box */
+  .modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Modal header */
+  .modal-content h3 {
+    
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  /* Modal body */
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .modal-body label {
+    font-size: 1rem;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-body select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+  }
+  .modal-body span
+  {
+  
+    width: 80px;
+  }
+  /* Modal footer buttons */
+  .modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+  }
+  
+  .modal-footer button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    transition: background-color 0.2s ease-in-out;
+    background-color: #0b73ea;
+    color: rgb(255, 252, 252);
+  }
+  .modal-footer button:hover
+  {
+    scale: 1.1;
+    background-color: #df0632;
+  }
+  
+
+  .monster-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -120px; 
+  }
+  
+  .monster {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .monster img {
+    width: 150px;
+  }
+  
+  .eye {
+    position: absolute;
+    width: 37px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  #eye-left {
+    top: 25px; /* Adjust based on the monster image */
+    left: 35px;
+  }
+  
+  #eye-right {
+    top: 25px;
+    right: 35px;
+  }
+  
+  .pupil {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: black;
+    transform: translate(-50%, -50%);
+  }
+  .body-info-printer
+{
+    transform: translateY(-30%);
+}
+
+
+
+
+
+
+
+
+  
+  /* Animation for modal appearance */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
