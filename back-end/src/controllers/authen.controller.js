@@ -27,13 +27,15 @@ const signin = async (req, res) => {
                     .then(client => res.send({
                         full_name: client.full_name,
                         number_page: client.number_page,
-                        last_login: client.last_login
+                        last_login: client.last_login,
+                        access_token: token
                     }))
             } else {
                 Spso.findByIdAndUpdate(user.role, { last_login: Date.now() }, { returnDocument: 'after' })
                     .then(spso => res.send({
                         full_name: spso.full_name,
-                        last_login: spso.last_login
+                        last_login: spso.last_login,
+                        access_token: token
                     }))
             }
         })
