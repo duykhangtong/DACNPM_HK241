@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHouse, faChevronDown, faEnvelope, faLock  } from '@fortawesome/free-solid-svg-icons';
 import './Login.css';
 import img_login from '../../Image/img_login-removebg-preview.png';
+import login from './API';
 let user = 'Nguyễn Minh Khang';
 function Header()
 {
@@ -216,8 +217,24 @@ function Body3()
 </div>
     );
 }
+
+const handleLogin = async (email,password) => {
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+   
+
+    try {
+        const res = await login(email, password); // Call the login function
+    } catch (error) {
+        alert("Login failed. Please check your credentials.");
+    }
+};
 function ĐangNhap()
 {
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
     return(
         <div className='body-Landing_Page'>
             <div className='box-container-login'>
@@ -225,12 +242,12 @@ function ĐangNhap()
                     <header>Sign in</header>
                     <div className='input'>
                         <FontAwesomeIcon icon={faEnvelope} />
-                        <input type='email' placeholder='Enter your email'></input>
+                        <input type='email' placeholder='Enter your email' name='email' ref={emailRef}></input>
                         <div className='line'></div>
                     </div>
                     <div className='input'>
                         <FontAwesomeIcon icon={faLock} />
-                        <input type='password' placeholder='Enter your password'></input>
+                        <input type='password' placeholder='Enter your password' name='password' ref={passwordRef}></input>
                         <div className='line'></div>
                     </div>
                     <div className='remember'>
@@ -238,7 +255,7 @@ function ĐangNhap()
                         <span>Remember me</span>
                     </div>
                     <div className='kk'>
-                        <button>Go Printing</button>
+                        <button onClick={() => handleLogin(emailRef.current.value,passwordRef.current.value)}>Go Printing</button>
                     </div>
                   
                 </div>
