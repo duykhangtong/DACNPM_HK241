@@ -2,7 +2,7 @@ import axios from 'axios';
 async function login(email, password) {
     try
     {
-        const URL = "http://localhost:80/api";
+        const URL = "http://localhost:80/api/auth/signin";
         const data = {email, password}
         console.log("OK");
        return axios.post(URL,data);
