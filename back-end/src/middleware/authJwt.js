@@ -5,35 +5,75 @@ const User = db.user;
 const Client = db.client;
 const Spso = db.spso;
 
-const verifyToken = (req, res, next) => {
-    let token = req.session.token;
+const ClientVerifyToken = (req, res, next) => {
+    if (req?.headers?.authorization?.split(' ')?.[1]) {
+        const token = req.headers.authorization.split(' ')[1];
+        try {
+            const decode = jwt.verify(token, config.secret);
 
-    if (!token) {
-        return res.status(403).send({ message: 'No token provided!' });
-    }
-
-    jwt.verify(token, config.secret, (err, decode) => {
-        if (err) {
-            return res.status(401).send({ message: 'Unauthorized!' });
+            if (decode.roleType != 'client') {
+                return res.status(404).json({
+                    message: "required Client Role"
+                })
+            }
+            req.role = decode.role;
+            next();
+        } catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                return res.status(401).json({
+                    message: "Token is expired!"
+                })
+            } else if (error.name === 'JsonWebTokenError') {
+                return res.status(401).json({
+                    message: "Token is invalid!"
+                })
+            } else {
+                console.error(error);
+                return res.status(500);
+            }
         }
-        req.userId = decode.id;
-        next();
-    });
+    } else {
+        return res.status(401).json({
+            message: "Not Access Token Or Expedite Access Token"
+        })
+    }
 };
 
-const isAdmin = (req, res, next) => {
-    User.findById(req.userId)
-        .then((user) => {
-            if (user.role_type === "admin") {
-                Spso.updateOne({ _id: user.role }, { last_login: Date.now() });
-                next();
-                return;
+const AdminVerifyToken = (req, res, next) => {
+    if (req?.headers?.authorization?.split(' ')?.[1]) {
+        const token = req.headers.authorization.split(' ')[1];
+        try {
+            const decode = jwt.verify(token, config.secret);
+
+            if (decode.roleType != "admin") {
+                return res.status(404).json({
+                    message: "Required Admin Role"
+                })
             }
 
-            res.status(403).send({ message: 'Require admin role!' });
+            req.role = decode.role;
+
+            next();
+        } catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                return res.status(401).json({
+                    message: "Token is expired!"
+                })
+            } else if (error.name === 'JsonWebTokenError') {
+                return res.status(401).json({
+                    message: "Token is invalid!"
+                })
+            } else {
+                console.error(error);
+                return res.status(500);
+            }
+        }
+    } else {
+        return res.status(401).json({
+            message: "Not Access Token Or Expedite Access Token"
         })
-        .catch(err => res.status(500).send({ message: err }));
+    }
 }
 
 
-module.exports = { verifyToken, isAdmin };
+module.exports = { ClientVerifyToken, AdminVerifyToken };

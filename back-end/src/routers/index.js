@@ -8,7 +8,7 @@ const feedbackRoute = require('./feedback.route');
 const printerRoute = require('./printer.route');
 const pageOrderRoute = require('./page_order.route');
 const printOrderRoute = require('./print_order.route');
-
+const accountRoute = require('./account.route');
 
 initWebRouter = (app) => {
     router.use('/auth', authenRoute);
@@ -18,6 +18,7 @@ initWebRouter = (app) => {
     router.use('/printers', printerRoute);
     router.use('/pageOrders', pageOrderRoute);
     router.use('/printOrders', printOrderRoute);
+    router.use('/account', accountRoute);
 
     router.get('/', (req, res) => {
         res.send('Hello World!!');
