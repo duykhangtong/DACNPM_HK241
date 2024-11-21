@@ -4,9 +4,9 @@ async function login(email, password) {
     {
         const URL = "http://localhost:80/api/auth/signin";
         const data = {email, password}
-        console.log("OK");
        return axios.post(URL,data);
-    
+   
+    //
     }
     catch (error) {
         console.error("Login failed:", error.response ? error.response.data : error);

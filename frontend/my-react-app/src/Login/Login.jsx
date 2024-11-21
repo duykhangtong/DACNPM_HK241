@@ -12,8 +12,13 @@ const handleLogin = async (email,password,navigate) => {
         return;
     }
     try {
-        const res = await login(email, password); // Call the login function
-        if(res)
+        const response = await login(email, password); // Call the login function
+        console.log(response);
+        if (response.data && response.data.access_token) {
+            localStorage.setItem('access_token', response.data.accessToken);
+            console.log("OK");
+        }
+        if(response)
             navigate('/SPSS/trangchu')
     } catch (error) {
         alert("Login failed. Please check your credentials.");

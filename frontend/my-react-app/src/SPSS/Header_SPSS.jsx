@@ -7,6 +7,34 @@ import logoBK from '../../Image/logo_BK2-removebg.png';
 import { BrowserRouter as Router, Routes, Route, NavLink,Outlet } from 'react-router-dom';
 import './SPSS.css';
 let user = "NguyenKhang";
+function User_Dropdown ()
+{
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+      setDropdownOpen(!dropdownOpen);
+    };
+    return( 
+        <div className="tt-user" onClick={toggleDropdown}>
+        <FontAwesomeIcon icon={faUser} className="tt-iconuser" />
+        <span>{user}</span>
+        <FontAwesomeIcon icon={faAngleDown} className="tt-angledown" />
+        {dropdownOpen && (
+          <div className="dropdown-menu">
+            <a href="#" className="dropdown-item">
+              Thông tin
+            </a>
+            <a href="#" className="dropdown-item">
+              Báo cáo
+            </a>
+            <a href="#" className="dropdown-item">
+              Đăng xuất
+            </a>
+          </div>
+        )}
+      </div>
+    );
+};
 function Header_SPSS() 
 {
     const [notificationCount, setNotificationCount] = useState(3);
@@ -44,17 +72,12 @@ function Header_SPSS()
                         </li>
                 </ul>
                 <div className="tt-notification">
-                <FontAwesomeIcon icon={faBell} className="tt-iconbell"/>
-                {notificationCount > 0 && (
-                        <span className="notification-badge">{notificationCount}</span>
-                    )}
+                        <FontAwesomeIcon icon={faBell} className="tt-iconbell"/>
+                        {notificationCount > 0 && (
+                                <span className="notification-badge">{notificationCount}</span>
+                            )}
                 </div>
-                <div className="tt-user">
-                    <FontAwesomeIcon icon={faUser} className="tt-iconuser"/>
-                    <span>{user}</span>
-                    <FontAwesomeIcon icon={faAngleDown} className="tt-angledown"/>
-                </div>
-            
+                <User_Dropdown/>
             </div>
             <Outlet />
     </div>
