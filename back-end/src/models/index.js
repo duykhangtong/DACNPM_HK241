@@ -11,5 +11,6 @@ db.feedback = require('./feedback.model');
 db.page_order = require('./page_order.model');
 db.print_order = require('./print_order.model');
 db.printer = require('./printer.model');
+db.file = require('./file.model');
 
 module.exports = db;
