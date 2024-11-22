@@ -6,37 +6,7 @@ import { faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg
 function Manage() {
     return (
         <div>
-            <header>
-                <nav className="navbar navbar-expand-lg navbar-light bg-gray-300">
-                    <div className="container">
-                        <a className="navbar-brand font-weight-bold" href="#">SPSS</a>
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarNav">
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Trang chủ</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Báo cáo</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Quản lý</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Lịch sử dịch vụ</a>
-                                </li>
-                            </ul>
-                            <div className="d-flex align-items-center">
-                                <FontAwesomeIcon icon={faUser} className="me-2" />
-                                <span className="me-2">SPSO</span>
-                                <FontAwesomeIcon icon={faCaretDown} />
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </header>
+           
             <main className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mb-8">
                     <h1 className="text-3xl font-weight-bold">Danh sách máy in</h1>

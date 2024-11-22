@@ -5,35 +5,7 @@ import './Report.css'
 function Report() {
     return (
         <div className="d-flex flex-column min-vh-100">
-            <nav className="navbar navbar-expand-lg navbar-light bg-gray-300 shadow-sm mb-4">
-                <div className="container">
-                    <a className="navbar-brand" href="#">SPSS</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav me-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Trang chủ</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link font-weight-bold" href="#">Báo cáo</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Quản lý</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Lịch sử dịch vụ</a>
-                            </li>
-                        </ul>
-                        <div className="d-flex align-items-center">
-                            <FontAwesomeIcon icon={faUser} className="text-xl" />
-                            <span className="ms-2">SPSO</span>
-                            <FontAwesomeIcon icon={faCaretDown} className="ms-1" />
-                        </div>
-                    </div>
-                </div>
-            </nav>
+            
 
             <main className="flex-grow-1">
                 <div className="container py-4">
