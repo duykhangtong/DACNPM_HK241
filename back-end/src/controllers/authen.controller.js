@@ -26,6 +26,7 @@ const signin = async (req, res) => {
                         full_name: client.full_name,
                         number_page: client.number_page,
                         last_login: client.last_login,
+                        roleType: user.role_type,
                         access_token: token
                     }))
             } else {
@@ -33,6 +34,7 @@ const signin = async (req, res) => {
                     .then(spso => res.json({
                         full_name: spso.full_name,
                         last_login: spso.last_login,
+                        roleType: user.role_type,
                         access_token: token
                     }))
             }
