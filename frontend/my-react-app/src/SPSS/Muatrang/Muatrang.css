@@ -1,0 +1,51 @@
+.mt-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .mt-left-box,
+  .mt-right-box {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  .mt-left-box {
+    margin-right: 20px;
+  }
+  
+  .mt-left-box h2,
+  .mt-left-box h3 {
+    margin-bottom: 15px;
+  }
+  
+  .mt-left-box input[type="number"],
+  input[type="text"] {
+    margin: 10px 0;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .mt-left-box button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button.active {
+    border: 2px solid blue;
+  }
+  
+  .mt-payment-button {
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  

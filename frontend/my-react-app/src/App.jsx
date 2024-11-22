@@ -3,8 +3,8 @@ import Header_SPSS from './SPSS/Header_SPSS.jsx';
 import Intailieu from './SPSS/Intailieu/Intailieu.jsx';
 import Lichsuin from './SPSS/Lichsuin/Lichsuin.jsx';
 import Trangchu from './SPSS/Trangchu/trangchu.jsx';
-import SPSO from './SPSO/SPSO.jsx';
 import Login from './Login/Login.jsx';
+import Muatrangin from './SPSS/Muatrang/Muatrang.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import PrintHis from './UI-SPSO/PrintingHistory/PrintHis';
 // import HomePage from './UI-SPSO/HomePage/HomePage';
@@ -19,10 +19,10 @@ function App() {
                     <Route path="/SPSS" element={<Header_SPSS />}>
                         <Route path="intailieu" element={<Intailieu />} />
                         <Route path="lichsuin" element={<Lichsuin />} />
-                        <Route path="thongtin" element={<Lichsuin/> } />
+                        <Route path="muatrangin" element={<Muatrangin/> } />
                         <Route path="trangchu" element={<Trangchu />} />
                      </Route>
-                    <Route path="/SPSO" element={<SPSO />} />
+                 
                     
                 </Routes>
             </Router>
