@@ -232,10 +232,7 @@ function Intailieu() {
               </div>
             ))}
           </div>
-          {/* Remove the confirm print button if it's no longer needed */}
-          {/* <div className='container-accept-printing'>
-            <button className='accept-printing' onClick={handleUploadFiles}>Xác nhận in</button>
-          </div> */}
+         
         </div>
       </div>
       <FileConfigurationModal
