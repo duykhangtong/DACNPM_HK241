@@ -150,8 +150,20 @@ const review = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-}
+};
+
+// [DELETE] /api/file/:id/delete
+const remove = async (req, res, next) => {
+  try {
+    await File.deleteOne({_id: req.params.id});
+    const backURL = req.header('Referer') || '/';
+    res.redirect(backURL);
+  } catch(err) {
+    console.log(err);
+    next(err);
+  }
+};
 
 
-module.exports = { upload , getAll, getById, review };
+module.exports = { upload , getAll, getById, review, remove };
 
