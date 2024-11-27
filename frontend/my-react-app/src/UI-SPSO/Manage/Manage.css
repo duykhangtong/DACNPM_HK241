@@ -1,0 +1,121 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main{
+    background-color: #fff;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header .actions .btn-add {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.header .actions .search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Printer list styles */
+.printer-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.printer-item {
+    text-align: center;
+    justify-content: center;
+        align-items: center;
+}
+
+.printer-item img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    
+}
+
+.printer-item .btn-primary {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+/* Footer styles */
+.footer {
+    background-color: #fff;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer .left,
+.footer .center,
+.footer .right {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer .left img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.footer .center,
+.footer .right {
+    text-align: center;
+}
+
+.footer .right {
+    text-align: right;
+}
+
+.footer .info {
+    color: #6c757d;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer .info span {
+    font-weight: bold;
+}
