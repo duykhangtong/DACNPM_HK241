@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: DACNPM
+  version: 1.0.0
+servers:
+  - url: http://localhost:80/api
+tags:
+  - name: authen-author
+    description: API authen author
+paths:
+  /auth/signin:
+    post:
+      tags:
+        - authen-author
+      summary: sign in account
+      operationId: login
+      requestBody:
+        description: Sign in info
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: khang@hcmut.edu.vn
+                password:
+                  type: string
+                  example: 123456
+        required: true
+      responses:
+        '200':
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  full_name:
+                    type: string
+                    example: Tống Duy Khang
+                  number_page:
+                    type: integer
+                    example: 30
+                  last_login:
+                    type: string
+                    example: 2024-11-16T03:03:56.316Z
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzAxMzUzNDI4MWMwOWY5M2Q3ZWZkYyIsImlhdCI6MTczMTcyNjIzNiwiZXhwIjoxNzMxODEyNjM2fQ.botg4HW1kba8R7Spg9QPJMFDaDs1vSShRm_UZ0dDX1E
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found!
+
+  /auth/signout:
+    post:
+      tags:
+        - authen-author
+      summary: sign out account
+      operationId: logout
+      responses:
+        default:
+          description: Logout successfully
+  
+  /test/public:
+    get:
+      tags:
+        - authen-author
+      summary: author public
+      operationId: public
+      responses:
+        default:
+          description: access public board successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Public content!!!!
+  
+  /test/client:
+    get:
+      tags:
+        - authen-author
+      summary: author client
+      operationId: client
+      responses:
+        '200':
+          description: access client board successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: client content!!!!
+        '403':
+          description: Forbidden - different scenarios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                noTokenProvide:
+                  summary: chưa signin
+                  value:
+                    message: no token provide
+                notRole:
+                  summary: không phải role client
+                  value:
+                    message: Require client role!
+  
+  /test/admin:
+    get:
+      tags:
+        - authen-author
+      summary: author admin
+      description: tương tự với client
+      operationId: client
+      responses:
+        '200':
+          description: access admin board successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: admin content!!!!
+
+
+  
+
+
+
+
+
+          
