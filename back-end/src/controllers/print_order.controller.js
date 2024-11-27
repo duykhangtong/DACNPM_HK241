@@ -1,4 +1,5 @@
 const PrintOrder = require('../models/print_order.model');
+const Client = require('../models/client.model');
 
 const create = async (req, res, next) => {
     const { page_size, page_orientation, sided, pages_to_printed, client_id, document_id, printer_id } = req.body;
@@ -8,6 +9,10 @@ const create = async (req, res, next) => {
 
     await printOrder.save()
         .then(() => res.status(200).send('Add print order successfully!!!'))
+        .then(async () => {
+            const client = await Client.findById(client_id);
+            Client.updateOne({ _id: client_id }, { number_page: client.number_page - total_print_pages });
+        })
         .catch(err => next(err));
 }
 
