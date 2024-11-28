@@ -2,7 +2,8 @@ const PrintOrder = require('../models/print_order.model');
 const Client = require('../models/client.model');
 
 const create = async (req, res, next) => {
-    const { page_size, page_orientation, sided, pages_to_printed, client_id, document_id, printer_id } = req.body;
+    const { page_size, page_orientation, sided, pages_to_printed, document_id, printer_id } = req.body;
+    const client_id = req.role;
     let total_print_pages = sided === "double-sided" ? pages_to_printed / 2 : pages_to_printed;
     total_print_pages = (page_size === "A4" ? total_print_pages : total_print_pages * 2);
     const printOrder = new PrintOrder({ page_size, page_orientation, sided, pages_to_printed, total_print_pages, client_id, document_id, printer_id });
@@ -39,7 +40,7 @@ const set_state_and_endtime = async (req, res, next) => {
 }
 
 const getByUserId = async (req, res, next) => {
-    const client_id = req.params.client_id;
+    const client_id = req.role;
     await PrintOrder.find({ client_id: client_id })
         .then(printOrders => res.json(printOrders))
         .catch(err => next(err));
