@@ -22,8 +22,9 @@ const printOrder = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Printer'
     },
-    start_time: { type: Date, default: Date.now() },
     end_time: { type: Date, default: null },
+}, {
+    timestamps: true,
 })
 
 module.exports = mongoose.model('PrintOrder', printOrder);
