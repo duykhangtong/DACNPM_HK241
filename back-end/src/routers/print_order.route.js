@@ -5,7 +5,7 @@ const authJwt = require('../middleware/authJwt');
 
 
 router.get('/my', [authJwt.ClientVerifyToken], printOrderController.getByUserId);
-router.put('/:id', printOrderController.set_state_and_endtime);
+router.put('/:id', [authJwt.AdminVerifyToken], printOrderController.set_state_and_endtime);
 router.get('/filters', printOrderController.filterByDate);
 router.get('/:id', printOrderController.getById);
 router.post('/', [authJwt.ClientVerifyToken], printOrderController.create);

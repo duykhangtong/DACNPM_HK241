@@ -5,14 +5,16 @@ const create = async (req, res, next) => {
     const { page_size, page_orientation, sided, pages_to_printed, document_id, printer_id } = req.body;
     const client_id = req.role;
     let total_print_pages = sided === "double-sided" ? pages_to_printed / 2 : pages_to_printed;
-    total_print_pages = (page_size === "A4" ? total_print_pages : total_print_pages * 2);
+    total_print_pages = page_size === "A4" ? total_print_pages : total_print_pages * 2;
     const printOrder = new PrintOrder({ page_size, page_orientation, sided, pages_to_printed, total_print_pages, client_id, document_id, printer_id });
 
     await printOrder.save()
         .then(() => res.status(200).send('Add print order successfully!!!'))
         .then(async () => {
-            const client = await Client.findById(client_id);
-            Client.updateOne({ _id: client_id }, { number_page: client.number_page - total_print_pages });
+            await Client.findByIdAndUpdate(
+                client_id,
+                { $inc: { number_page: -total_print_pages } }
+            );
         })
         .catch(err => next(err));
 }
