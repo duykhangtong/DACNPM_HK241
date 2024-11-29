@@ -1,8 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import './Report.css';
-
+import { useState } from 'react';
 function Report() {
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    const years = Array.from({ length: 10 }, (_, i) => 2024 - i); // Hiển thị từ 2024 đến 2015
+
+    const [selectedReportType, setSelectedReportType] = useState('');
+    const [selectedMonth, setSelectedMonth] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
     return (
         <div className="d-flex flex-column min-vh-100">
             <main className="flex-grow-1">
@@ -11,21 +17,42 @@ function Report() {
                         <div className="header">
                             <div className="col">
                                 <label className="text-gray-700">Chọn loại báo cáo</label>
-                                <button className="btn-report">
-                                    Theo tháng <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
-                            </div>
-                            <div className="col">
-                                <label className="text-gray-700">Chọn theo năm</label>
-                                <button className="btn-report">
-                                    Chọn năm <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
+                               <select 
+                                    className="form-select" 
+                                    value={selectedReportType} 
+                                    onChange={(e) => setSelectedReportType(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn loại báo cáo</option>
+                                    <option value="thang">Theo tháng</option>
+                                    <option value="nam">Theo năm</option>
+                                    <option value="tatca">Tất cả</option>
+                                </select>
                             </div>
                             <div className="col">
                                 <label className="text-gray-700">Chọn theo tháng</label>
-                                <button className="btn-report">
-                                    Tất cả <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
+                               <select 
+                                    className="form-select" 
+                                    value={selectedMonth} 
+                                    onChange={(e) => setSelectedMonth(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn tháng</option>
+                                    {months.map(month => (
+                                        <option key={month} value={month}>Tháng {month}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col">
+                                <label className="text-gray-700">Chọn theo năm</label>
+                                 <select 
+                                    className="form-select" 
+                                    value={selectedYear} 
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn năm</option>
+                                    {years.map(year => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <table className="table">

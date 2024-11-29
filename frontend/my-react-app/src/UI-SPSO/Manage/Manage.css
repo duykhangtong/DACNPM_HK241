@@ -5,14 +5,15 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-main{
+
+main {
     background-color: #fff;
 }
+
 .container {
-    max-width: 1200px;
+    max-width: 1700px;
     margin: 0 auto;
     padding: 20px;
-    
 }
 
 /* Header styles */
@@ -53,12 +54,15 @@ main{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+
 }
 
 .printer-item {
     text-align: center;
     justify-content: center;
-        align-items: center;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 .printer-item img {
@@ -66,7 +70,6 @@ main{
     height: 200px;
     object-fit: cover;
     margin-bottom: 10px;
-    
 }
 
 .printer-item .btn-primary {
@@ -118,4 +121,73 @@ main{
 
 .footer .info span {
     font-weight: bold;
+}
+
+/* styles/Manage.css */
+.add-printer-form {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid #00bfff;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.add-printer-form input,
+.add-printer-form select {
+    margin: 10px 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.add-printer-form button {
+    margin-top: 10px;
+}
+
+/* styles/Manage.css */
+.printer-details {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.printer-details button {
+    margin-right: 10px;
+}
+
+.btn-activate {
+    background-color: green;
+    color: white;
+
+    border: 5px solid green;
+    border-radius: 10px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+.btn-activate:hover {
+    background-color: darkgreen;
+}
+
+.btn-disable {
+    background-color: red;
+    color: white;
+
+    border: 5px solid red;
+    border-radius: 10px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+.btn-disable:hover {
+    background-color: darkred;
 }
