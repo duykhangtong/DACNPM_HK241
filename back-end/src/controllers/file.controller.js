@@ -159,7 +159,7 @@ const remove = async (req, res, next) => {
     const backURL = req.header('Referer') || '/';
     res.redirect(backURL);
   } catch(err) {
-    console.log(err);
+    console.log(err);    
     next(err);
   }
 };
