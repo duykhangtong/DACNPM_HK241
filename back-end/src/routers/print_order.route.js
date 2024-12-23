@@ -3,6 +3,7 @@ const router = express.Router();
 const printOrderController = require('../controllers/print_order.controller');
 
 router.put('/:id', printOrderController.set_state_and_endtime);
+router.get('/filters', printOrderController.filterByDate);
 router.get('/:id', printOrderController.getById);
 router.post('/', printOrderController.create);
 router.get('/', printOrderController.getAll);

@@ -1,65 +1,62 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import './Report.css'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import './Report.css';
+import { useState } from 'react';
 function Report() {
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    const years = Array.from({ length: 10 }, (_, i) => 2024 - i); // Hiển thị từ 2024 đến 2015
+
+    const [selectedReportType, setSelectedReportType] = useState('');
+    const [selectedMonth, setSelectedMonth] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
     return (
         <div className="d-flex flex-column min-vh-100">
-            <nav className="navbar navbar-expand-lg navbar-light bg-gray-300 shadow-sm mb-4">
-                <div className="container">
-                    <a className="navbar-brand" href="#">SPSS</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav me-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Trang chủ</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link font-weight-bold" href="#">Báo cáo</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Quản lý</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Lịch sử dịch vụ</a>
-                            </li>
-                        </ul>
-                        <div className="d-flex align-items-center">
-                            <FontAwesomeIcon icon={faUser} className="text-xl" />
-                            <span className="ms-2">SPSO</span>
-                            <FontAwesomeIcon icon={faCaretDown} className="ms-1" />
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
             <main className="flex-grow-1">
                 <div className="container py-4">
-                    <div className="card bg-gray-300 p-4 rounded-md shadow-md">
-                        <div className="row mb-4">
+                    <div className="card">
+                        <div className="header">
                             <div className="col">
                                 <label className="text-gray-700">Chọn loại báo cáo</label>
-                                <button className="btn btn-light border border-gray-400">
-                                    Theo tháng <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
-                            </div>
-                            <div className="col">
-                                <label className="text-gray-700">Chọn theo năm</label>
-                                <button className="btn btn-light border border-gray-400">
-                                    Chọn năm <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
+                               <select 
+                                    className="form-select" 
+                                    value={selectedReportType} 
+                                    onChange={(e) => setSelectedReportType(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn loại báo cáo</option>
+                                    <option value="thang">Theo tháng</option>
+                                    <option value="nam">Theo năm</option>
+                                    <option value="tatca">Tất cả</option>
+                                </select>
                             </div>
                             <div className="col">
                                 <label className="text-gray-700">Chọn theo tháng</label>
-                                <button className="btn btn-light border border-gray-400">
-                                    Tất cả <FontAwesomeIcon icon={faCaretDown} className="ms-2" />
-                                </button>
+                               <select 
+                                    className="form-select" 
+                                    value={selectedMonth} 
+                                    onChange={(e) => setSelectedMonth(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn tháng</option>
+                                    {months.map(month => (
+                                        <option key={month} value={month}>Tháng {month}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col">
+                                <label className="text-gray-700">Chọn theo năm</label>
+                                 <select 
+                                    className="form-select" 
+                                    value={selectedYear} 
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                >
+                                    <option value="" disabled>Chọn năm</option>
+                                    {years.map(year => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
-                        <table className="table table-striped table-bordered table-hover bg-gray-200">
-                            <thead className="bg-gray-400 text-white">
+                        <table className="table">
+                            <thead>
                                 <tr>
                                     <th>Số thứ tự</th>
                                     <th>Tháng</th>
@@ -79,7 +76,7 @@ function Report() {
                                     { id: 8, month: 3, year: 2024, detail: "Báo cáo tháng 3/2024" },
                                     { id: 9, month: 2, year: 2024, detail: "Báo cáo tháng 2/2024" },
                                 ].map((item) => (
-                                    <tr key={item.id} className="text-center">
+                                    <tr key={item.id}>
                                         <td>{item.id}</td>
                                         <td>{item.month}</td>
                                         <td>{item.year}</td>
@@ -93,24 +90,21 @@ function Report() {
                     </div>
                 </div>
             </main>
-
             <footer className="footer">
-                <div className="container d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center">
-                        <img src="https://placehold.co/50x50" alt="HCMUT logo" className="w-12 h-12" />
-                        <span className="text-gray-700 ms-2">HCMUT</span>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-gray-700 font-weight-bold">DANH MỤC</div>
-                        <div className="text-gray-700">Báo cáo</div>
-                        <div className="text-gray-700">Quản lý</div>
-                        <div className="text-gray-700">Lịch sử dịch vụ</div>
-                    </div>
-                    <div className="text-right">
-                        <div className="text-gray-700 font-weight-bold">LIÊN HỆ</div>
-                        <div className="text-gray-700">268 Lý Thường Kiệt, phường 14, quận 10, TP.HCM</div>
-                        <div className="text-gray-700">(028) 38 651 670 - (028) 38 647 256 (Ext: 5258, 5234)</div>
-                    </div>
+                <div className="footer-left d-flex align-items-center">
+                    <img src="https://placehold.co/50x50" alt="HCMUT logo" />
+                    <span className="info">HCMUT</span>
+                </div>
+                <div className="footer-center">
+                    <div className="info"><span>DANH MỤC</span></div>
+                    <div className="info">Báo cáo</div>
+                    <div className="info">Quản lý</div>
+                    <div className="info">Lịch sử dịch vụ</div>
+                </div>
+                <div className="footer-right">
+                    <div className="info"><span>LIÊN HỆ</span></div>
+                    <div className="info">268 Lý Thường Kiệt, phường 14, quận 10, TP.HCM</div>
+                    <div className="info">(028) 38 651 670 - (028) 38 647 256 (Ext: 5258, 5234)</div>
                 </div>
             </footer>
         </div>
