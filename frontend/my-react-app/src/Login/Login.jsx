@@ -1,10 +1,10 @@
 import './Login.css';
 import React, {useState, useEffect, useRef} from 'react';
-import login from '../LandingPage/API';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import img_login from '../../Image/img_login-removebg-preview.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock  } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const handleLogin = async (email,password,navigate) => {
     if (!email || !password) {
@@ -12,10 +12,11 @@ const handleLogin = async (email,password,navigate) => {
         return;
     }
     try {
-        const response = await login(email, password); // Call the login function
+        const data = {email, password};
+        const response = await axios.post("http://localhost:80/api/auth/signin",data);
         console.log(response);
-        if (response.data && response.data.access_token) {
-            localStorage.setItem('access_token', response.data.accessToken);
+        if (response.status == '200') {
+            localStorage.setItem('access_token', response.data.access_token);
             console.log("OK");
         }
         if(response)
