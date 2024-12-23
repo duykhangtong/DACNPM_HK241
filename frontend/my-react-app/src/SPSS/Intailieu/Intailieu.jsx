@@ -186,7 +186,7 @@ function Intailieu() {
   // Handle file deletion
   const handleDeleteFile = (fileId) => {
     axios
-      .delete(`http://localhost:80/api/file/${fileId}`)
+      .delete(`http://localhost:80/api/file/${fileId}/delete`)
       .then((response) => {
         setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
         console.log('File deleted successfully');
