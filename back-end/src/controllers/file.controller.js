@@ -155,9 +155,16 @@ const review = async (req, res, next) => {
 // [DELETE] /api/file/:id/delete
 const remove = async (req, res, next) => {
   try {
-    await File.deleteOne({_id: req.params.id});
-    const backURL = req.header('Referer') || '/';
-    res.redirect(backURL);
+    const deleteFile = await File.findById({_id: req.params.id});
+    if(!deleteFile) {
+      return res.status(404).json({ message: 'File not found.' });
+    }
+
+    await File.deleteOne(deleteFile);
+    res.status(200).json({
+      message: 'File deleted successfully.'
+    })
+    
   } catch(err) {
     console.log(err);    
     next(err);
