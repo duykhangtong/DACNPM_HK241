@@ -56,12 +56,19 @@ const filterByDate = async (req, res, next) => {
         const filter = {};
         if (startDate) {
             filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) };
-        }
-        if (endDate) {
-            filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+            if (endDate) {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+            } else {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date(startDate).setUTCHours(23, 59, 59, 999) };
+            }
         } else {
-            filter.createdAt = { ...filter.createdAt, $lte: new Date(startDate).setUTCHours(23, 59, 59, 999) };
+            if (endDate) {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+            } else {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date().setUTCHours(23, 59, 59, 999) };
+            }
         }
+
 
         const printOrders = await PrintOrder.find(filter).exec();
         res.json(printOrders);
