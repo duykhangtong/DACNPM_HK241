@@ -19,7 +19,7 @@ const getAll = (req, res, next) => {
 
 const updateState = (req, res, next) => {
     let id = req.params.id;
-    let state = req.body;
+    let { state } = req.body;
     Printer.findByIdAndUpdate(id, { state }, { returnDocument: 'after' })
         .then(printer => res.json(printer))
         .catch(err => next(err));
@@ -58,7 +58,7 @@ const filterPrinter = async (req, res, next) => {
 
         const printers = await Printer.find(filter);
         res.json(printers);
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 }
