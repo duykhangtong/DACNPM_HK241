@@ -26,10 +26,12 @@ const Muatrangin = () => {
     <div className="mt-container">
       {/* Left Box */}
       <div className="mt-left-box">
+        <div className='vien_left'></div>
+        <div className='left_container_payment'>
         <h2>Chọn số trang và phương thức thanh toán</h2>
         {/* Số trang */}
         <label>
-          Số trang cần mua:
+          <h3>Số trang cần mua:</h3>
           <input
             type="number"
             value={pages}
@@ -94,10 +96,13 @@ const Muatrangin = () => {
             placeholder="12345"
           />
         </label>
+        </div>
       </div>
 
       {/* Right Box */}
       <div className="mt-right-box">
+      <div className='vien_right'></div>
+      <div className='right_container_payment'>
         <h2>Thông tin thanh toán</h2>
         <p>Số trang bạn sẽ mua: {pages}</p>
         <p>Phương thức thanh toán: {paymentMethod || "Chưa chọn"}</p>
@@ -105,6 +110,7 @@ const Muatrangin = () => {
         <button className="mt-payment-button" onClick={handleSubmit}>
           Thanh toán
         </button>
+      </div>
       </div>
     </div>
   );

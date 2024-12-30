@@ -18,6 +18,9 @@ function User_Dropdown() {
         localStorage.clear();
         navigate('/');
     };
+    const handleInfo = () => {
+        navigate('/SPSS/info');
+    };
     return (
         <div className={style_headerSPSS["tt-user"]} onClick={toggleDropdown}>
             <FontAwesomeIcon icon={faUser} className={style_headerSPSS["tt-iconuser"]} />
@@ -25,7 +28,7 @@ function User_Dropdown() {
             <FontAwesomeIcon icon={faAngleDown} className={style_headerSPSS["tt-angledown"]} />
             {dropdownOpen && (
                 <div className={style_headerSPSS["dropdown-menu"]}>
-                    <button className={style_headerSPSS["dropdown-item"]}>
+                    <button className={style_headerSPSS["dropdown-item"]}  onClick={() => {handleInfo();}}>
                         Thông tin
                     </button>
                     <button className={style_headerSPSS["dropdown-item"]}>

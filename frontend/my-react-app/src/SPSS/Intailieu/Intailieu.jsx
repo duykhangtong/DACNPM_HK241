@@ -194,7 +194,7 @@ function Intailieu() {
   // Handle viewing file details
   const handleViewDetails = (fileId) => {
     axios
-      .get(`http://localhost:80/api/file/${fileId}/review`, { responseType: 'blob' })
+      .get(`http://localhost:80/api/file/${fileId}`, { responseType: 'blob' })
       .then((response) => {
         console.log('Response:', response);
         const file = new Blob([response.data], {

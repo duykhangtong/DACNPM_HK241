@@ -6,6 +6,7 @@ import Trangchu from './SPSS/Trangchu/trangchu.jsx';
 import Login from './Login/Login.jsx';
 import Muatrangin from './SPSS/Muatrang/Muatrang.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Info from './SPSS/Info/Info.jsx';
 // import PrintHis from './UI-SPSO/PrintingHistory/PrintHis';
 // import HomePage from './UI-SPSO/HomePage/HomePage';
 // import Manage from './UI-SPSO/Manage/Manage.jsx';
@@ -21,6 +22,7 @@ function App() {
                         <Route path="lichsuin" element={<Lichsuin />} />
                         <Route path="muatrangin" element={<Muatrangin/> } />
                         <Route path="trangchu" element={<Trangchu />} />
+                        <Route path="info" element={<Info />} />
                      </Route>
                  
                     
