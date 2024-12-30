@@ -86,6 +86,25 @@ const FileConfigurationModal  = ({file, isVisible, onClose, onSave}) =>
                 <option>Ngang</option>
               </select>
             </label>
+
+            <label>
+            <span>Số trang mỗi tờ:</span>
+            <select>
+                <option>1</option>
+                <option>2</option>
+                <option>4</option>
+
+            </select>
+            </label>
+      
+            <label>
+            <span>Số lượng bản copies:</span>
+            <input 
+              type="number" 
+              min="1" 
+              max="100" 
+            />
+            </label>
         </div>
        
         <div className="modal-footer">

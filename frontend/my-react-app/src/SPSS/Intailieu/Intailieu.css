@@ -268,31 +268,55 @@ input[type="file"] {
   }
   
   /* Modal body */
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .modal-body label {
-    font-size: 1rem;
-    color: #555;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modal-body select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 0.9rem;
-  }
-  .modal-body span
-  {
-  
-    width: 80px;
-  }
+  /* Modal body */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Khoảng cách giữa các hàng */
+}
+
+.modal-body label {
+  font-size: 1rem;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa nhãn và ô nhập */
+}
+
+.modal-body span {
+  width: 200px; /* Độ rộng cố định để đồng nhất */
+  font-weight: bold;
+}
+
+.modal-body select,
+.modal-body input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 300px; /* Độ rộng đồng nhất */
+  box-sizing: border-box;
+}
+
+.modal-body input[type="number"] {
+  -moz-appearance: textfield; /* Ẩn nút tăng/giảm trên Firefox */
+}
+
+/* .modal-body input[type="number"]::-webkit-inner-spin-button,
+.modal-body input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; 
+  margin: 0;
+} */
+
+/* Hover và focus hiệu ứng */
+.modal-body input:focus,
+.modal-body select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
   /* Modal footer buttons */
   .modal-footer {
     display: flex;

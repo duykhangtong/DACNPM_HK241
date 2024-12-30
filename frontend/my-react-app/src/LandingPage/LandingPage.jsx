@@ -90,6 +90,11 @@ const Navbar = () =>
     };
 function Body1()
 {
+    const navigate = useNavigate(); 
+        const login = () => 
+            { 
+                navigate('/login'); 
+            };
     return(
         <div className = "first-partBody1">
         <div className="title">
@@ -102,7 +107,7 @@ function Body1()
             </div>
             </div>
             <div className='button_started'>
-            <button className="Getstarted">BẮT ĐẦU IN</button>
+            <button className="Getstarted" onClick={login}>BẮT ĐẦU IN</button>
             </div>
         </div>
         <div className="part_pic">

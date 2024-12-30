@@ -140,7 +140,8 @@ background-color: white;
     color: #333;
   }
   
-  .dropdown-menu {
+  /* Dropdown menu container */
+.dropdown-menu {
     position: absolute;
     top: calc(100% + 20px);
     left: -20px;
@@ -149,18 +150,41 @@ background-color: white;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    min-width: 100%;
-  }
-  
-  .dropdown-item {
-    display: block;
+    min-width: 90%; /* Đảm bảo menu có kích thước tối thiểu */
+    overflow: hidden; /* Loại bỏ viền thừa */
+}
+
+/* Dropdown button styles */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     padding: 10px 15px;
     color: #333;
-    text-decoration: none;
     font-size: 14px;
-  }
-  
-  .dropdown-item:hover {
+    font-weight: 500;
+    background-color: transparent; /* Không có màu nền mặc định */
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer; /* Con trỏ chuột sẽ hiển thị khi hover */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.dropdown-item:hover {
     background-color: #f1f1f1;
+    color: #1d4ed8; /* Màu xanh khi hover */
+}
+
+/* Add subtle spacing between items */
+.dropdown-item + .dropdown-item {
+    border-top: 1px solid #eee; /* Viền ngăn cách giữa các button */
+}
+
+/* Focus styles (nếu cần accessibility) */
+.dropdown-item:focus {
+    outline: none;
+    background-color: #e2e8f0;
     color: #1d4ed8;
-  }
+}

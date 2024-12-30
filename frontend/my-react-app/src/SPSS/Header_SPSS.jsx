@@ -3,18 +3,21 @@ import { faAngleDown, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import logoBK from '../../Image/logo_BK2-removebg.png';
-import { BrowserRouter as Router, Routes, Route, NavLink, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, Outlet,useNavigate } from 'react-router-dom';
 import style_headerSPSS from './SPSS.module.css'; // Import đúng CSS Module
 
 let user = "NguyenKhang";
 
 function User_Dropdown() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
+    const navigate = useNavigate();
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
-
+    const handleDelete = () => {
+        localStorage.clear();
+        navigate('/');
+    };
     return (
         <div className={style_headerSPSS["tt-user"]} onClick={toggleDropdown}>
             <FontAwesomeIcon icon={faUser} className={style_headerSPSS["tt-iconuser"]} />
@@ -22,15 +25,15 @@ function User_Dropdown() {
             <FontAwesomeIcon icon={faAngleDown} className={style_headerSPSS["tt-angledown"]} />
             {dropdownOpen && (
                 <div className={style_headerSPSS["dropdown-menu"]}>
-                    <a href="#" className={style_headerSPSS["dropdown-item"]}>
+                    <button className={style_headerSPSS["dropdown-item"]}>
                         Thông tin
-                    </a>
-                    <a href="#" className={style_headerSPSS["dropdown-item"]}>
+                    </button>
+                    <button className={style_headerSPSS["dropdown-item"]}>
                         Báo cáo
-                    </a>
-                    <a href="#" className={style_headerSPSS["dropdown-item"]}>
+                    </button>
+                    <button className={style_headerSPSS["dropdown-item"]}  onClick={() => {handleDelete();}}>
                         Đăng xuất
-                    </a>
+                    </button>
                 </div>
             )}
         </div>
