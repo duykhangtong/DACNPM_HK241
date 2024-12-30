@@ -115,7 +115,12 @@ function Intailieu() {
     axios
       .get('http://localhost:80/api/file/store')
       .then((response) => {
-        setDbFiles(response.data);
+        if (Array.isArray(response.data)) {
+          setDbFiles(response.data);
+        } else {
+          setDbFiles([]); // Nếu không phải mảng, gán mảng rỗng
+          console.error('Expected an array but got:', response.data);
+        }      
       })
       .catch((error) => {
         console.error('Error fetching files', error);
@@ -172,6 +177,7 @@ function Intailieu() {
     axios
       .get(`http://localhost:80/api/file/${fileId}/review`, { responseType: 'blob' })
       .then((response) => {
+        console.log('Response:', response);
         const file = new Blob([response.data], {
           type: response.headers['content-type'],
         });
@@ -186,7 +192,7 @@ function Intailieu() {
   // Handle file deletion
   const handleDeleteFile = (fileId) => {
     axios
-      .delete(`http://localhost:80/api/file/${fileId}`)
+      .delete(`http://localhost:80/api/file/${fileId}/delete`)
       .then((response) => {
         setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
         console.log('File deleted successfully');

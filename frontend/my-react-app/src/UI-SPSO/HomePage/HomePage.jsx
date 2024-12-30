@@ -97,7 +97,6 @@ function SPSO()
 {
     return(
       <div>
-        <Navbar_row/>      
         <Body/>
         </div>
     );

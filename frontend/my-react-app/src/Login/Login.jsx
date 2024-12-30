@@ -15,11 +15,12 @@ const handleLogin = async (email,password,navigate) => {
         const data = {email, password};
         const response = await axios.post("http://localhost:80/api/auth/signin",data);
         console.log(response);
-        if (response.status == '200') {
+        if (response.data && response.data.access_token) {
             localStorage.setItem('access_token', response.data.access_token);
+            localStorage.setItem('role', response.data.roleType);
             console.log("OK");
         }
-        if(response)
+        if(localStorage.getItem('role') === 'client')
             navigate('/SPSS/trangchu')
     } catch (error) {
         alert("Login failed. Please check your credentials.");

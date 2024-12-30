@@ -7,6 +7,8 @@ servers:
 tags:
   - name: authen-author
     description: API authen author
+  - name: printer
+    description: API printer
 paths:
   /auth/signin:
     post:
@@ -123,7 +125,7 @@ paths:
         - authen-author
       summary: author admin
       description: tương tự với client
-      operationId: client
+      operationId: admin
       responses:
         '200':
           description: access admin board successfully
@@ -132,6 +134,73 @@ paths:
               schema:
                 type: string
                 example: admin content!!!!
+
+  /printers:
+    get:
+      tags:
+        - printer
+      summary: get all printer
+      responses:
+        default:
+          description: get successfull
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  brand:
+                    type: string
+                  machine_model:
+                    type: string
+                  state:
+                    type: boolean
+                  campus:
+                    type: string
+                  building:
+                    type: string
+                  room:
+                    type: string
+
+    post:
+      tags:
+        - printer
+      summary: add printer
+      requestBody:
+        description: Sign in info
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                brand:
+                  type: string
+                machine_model:
+                  type: string
+                state:
+                  type: boolean
+                campus:
+                  type: string
+                building:
+                  type: string
+                room:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: Add successfully
+  /printers/{id}:
+    delete:
+      tags:
+        - printer
+      summary: delete printer
+      responses:
+        default:
+          description: delete successfully
+
 
 
   
