@@ -115,7 +115,12 @@ function Intailieu() {
     axios
       .get('http://localhost:80/api/file/store')
       .then((response) => {
-        setDbFiles(response.data);
+        if (Array.isArray(response.data)) {
+          setDbFiles(response.data);
+        } else {
+          setDbFiles([]); // Nếu không phải mảng, gán mảng rỗng
+          console.error('Expected an array but got:', response.data);
+        }      
       })
       .catch((error) => {
         console.error('Error fetching files', error);
@@ -172,6 +177,7 @@ function Intailieu() {
     axios
       .get(`http://localhost:80/api/file/${fileId}/review`, { responseType: 'blob' })
       .then((response) => {
+        console.log('Response:', response);
         const file = new Blob([response.data], {
           type: response.headers['content-type'],
         });
