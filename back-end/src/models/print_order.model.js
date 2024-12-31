@@ -14,14 +14,15 @@ const printOrder = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Client'
     },
-    document_id: {
+    file_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Document'
+        ref: 'Files'
     },
     printer_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Printer'
     },
+    isTransaction: { type: Boolean, default: false },
     end_time: { type: Date, default: null },
 }, {
     timestamps: true,
