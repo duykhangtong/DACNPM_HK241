@@ -4,6 +4,7 @@ const authJwt = require('../middleware/authJwt');
 
 const router = express.Router();
 
+router.put('/updatePage', [authJwt.ClientVerifyToken], accountController.updateNumberPage);
 router.get('/client', [authJwt.ClientVerifyToken], accountController.getClientInfo);
 router.get('/spso', [authJwt.AdminVerifyToken], accountController.getAdminInfo);
 
