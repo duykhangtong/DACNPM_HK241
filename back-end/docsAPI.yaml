@@ -201,6 +201,225 @@ paths:
         default:
           description: delete successfully
 
+  /printOrders/my:
+    get:
+      tags:
+        - Print Order
+      summary: get Order by client 
+      requestBody:
+        description: get all Order by client
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: ObjectId
+        required: true
+      responses:
+        '200':
+          description: get Print Order successfully
+          content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: ObjectId
+                client_id:
+                  type: ObjectId
+                printer_id:
+                  type: ObjectId
+                file_id:
+                  type: ObjectId
+                page_size:
+                  type: string
+                page_orientation:
+                  type: string
+                state:
+                  type: string
+                scale:
+                  type: Number
+                pages_to_printed:
+                  type: string
+                pages_per_sheet:
+                  type: string
+                total_print_pages:
+                  type: string
+                isTransaction:
+                  type: boolean
+
+  /printOrders/confirm:
+   patch:
+   summary: Confirm Print Order
+    tags:
+      - Print Order
+    requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            _id:
+              type: ObjectId
+        required: true
+      responses:
+        '200':
+          description: Confirm Print Order successfully
+          content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: ObjectId
+                client_id:
+                  type: ObjectId
+                printer_id:
+                  type: ObjectId
+                file_id:
+                  type: ObjectId
+                page_size:
+                  type: string
+                page_orientation:
+                  type: string
+                state:
+                  type: string
+                scale:
+                  type: Number
+                pages_to_printed:
+                  type: string
+                pages_per_sheet:
+                  type: string
+                total_print_pages:
+                  type: string
+                isTransaction:
+                  type: boolean
+
+  /printOrders/:id/update:
+    put:
+    summary: Update Print Order
+    tags:
+      - Print Order
+    requestBody:
+      content:  
+        application/json: 
+        schema:
+        type: object
+        properties:
+          printer_id:
+            type: ObjectId
+          page_size:
+            type: string
+          page_orientation:
+            type: string
+          sided:
+            type: string
+          pages_per_sheet:
+            type: string
+          number_of_copies:
+            type: string
+        required: true
+      responses:
+        200:
+          description: Update Print Order successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: ObjectId
+                  client_id:
+                    type: ObjectId
+                  printer_id:
+                    type: ObjectId
+                  file_id:
+                    type: ObjectId
+                  page_size:
+                    type: string
+                  page_orientation:
+                    type: string
+                  state:
+                    type: string
+                  scale:
+                    type: Number
+                  pages_to_printed:
+                    type: string
+                  pages_per_sheet:
+                    type: string
+                  total_print_pages:
+                    type: string
+                  isTransaction:
+                    type: boolean
+
+  /printOrders/create:
+    post:
+    summary: Create Print Order
+    tags:
+      - Print Order
+    requestBody:
+      content:  
+        application/json: 
+        schema:
+        type: object
+        properties:
+          client_id:
+            type: ObjectId
+          printer_id:
+            type: ObjectId
+          file_id:
+            type: ObjectId
+          page_size:
+            type: string
+          page_orientation:
+            type: string
+          sided:
+            type: string
+          pages_per_sheet:
+            type: string
+          number_of_copies:
+            type: string
+        required: true
+      responses:
+        200:
+          description: Create Print Order successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: ObjectId
+                  client_id:
+                    type: ObjectId
+                  printer_id:
+                    type: ObjectId
+                  file_id:
+                    type: ObjectId
+                  page_size:
+                    type: string
+                  page_orientation:
+                    type: string
+                  state:
+                    type: string
+                  scale:
+                    type: Number
+                  pages_to_printed:
+                    type: string
+                  pages_per_sheet:
+                    type: string
+                  total_print_pages:
+                    type: string
+                  isTransaction:
+                    type: boolean
+   
+
+
+
+      
+  
+
 
 
   

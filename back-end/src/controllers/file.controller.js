@@ -55,7 +55,7 @@ const upload = async (req, res, next) => {
 //[GET] /api/file/store
 const getAll = async (req, res, next) => {
   try {
-    const files = await File.find({});
+    const files = await File.find({isTransaction: false});
     if(!files || files.length === 0){
       return res.json({ message: 'There are currently no files available.'})
     }
@@ -152,15 +152,16 @@ const review = async (req, res, next) => {
   }
 };
 
-// [DELETE] /api/file/:id/delete
+// [PATCH] /api/file/:id/delete
 const remove = async (req, res, next) => {
   try {
-    const deleteFile = await File.findById({_id: req.params.id});
+    const deleteFile = await File.findById({_id: req.params.id, isTransaction: false});
     if(!deleteFile) {
       return res.status(404).json({ message: 'File not found.' });
     }
+    deleteFile.buffer = null;
+    deleteFile.isTransaction = true;
 
-    await File.deleteOne(deleteFile);
     res.status(200).json({
       message: 'File deleted successfully.'
     })
