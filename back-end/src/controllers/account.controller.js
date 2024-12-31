@@ -22,10 +22,19 @@ const updateNumberPage = async (req, res) => {
     }
 }
 
+const getAllClient = async (req, res) => {
+    try {
+        const clients = await Client.find({});
+        res.json(clients);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const getAdminInfo = (req, res) => {
     Spso.findById(req.role)
         .then(spso => res.status(200).json(spso))
         .catch(error => console.error(error));
 }
 
-module.exports = { getClientInfo, getAdminInfo, updateNumberPage };
+module.exports = { getClientInfo, getAdminInfo, updateNumberPage, getAllClient };

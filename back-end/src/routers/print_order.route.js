@@ -4,6 +4,7 @@ const printOrderController = require('../controllers/print_order.controller');
 const authJwt = require('../middleware/authJwt');
 
 
+router.get('/filterSPSO', printOrderController.filterSPSO);
 router.get('/my', [authJwt.ClientVerifyToken], printOrderController.getByUserId);
 router.put('/:id/update', [authJwt.ClientVerifyToken], printOrderController.updateOrder);
 router.patch('/confirm', [authJwt.ClientVerifyToken], printOrderController.confirm);
