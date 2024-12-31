@@ -15,7 +15,7 @@ function PrintHistoryFilter()
         // Add more rows as needed
     ];
     return(
-
+<>
         <div className="his-container">
             <h2>Lịch sử in</h2>
             
@@ -87,7 +87,10 @@ function PrintHistoryFilter()
                     ))}
                 </tbody>
             </table>
-        </div>
+            
+            </div>
+        
+</>
     );
 };
 export default PrintHistoryFilter;

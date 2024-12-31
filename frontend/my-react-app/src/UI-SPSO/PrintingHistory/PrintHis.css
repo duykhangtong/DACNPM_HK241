@@ -3,9 +3,11 @@
 }
 
 .his-container {
-    width: 80%;
-    font-family: Arial, sans-serif;
+    width: 90%;
+    max-width: 1200px;
     margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
 .his-container h2 {
@@ -17,44 +19,42 @@
 }
 
 .filter-container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    font-size: 1.1rem;
-    gap: 50px;
+    display: flex;
+    
 }
 
 .filter-container .sub-filter {
-    display: inline-flex;
-    gap: 20px;
-    align-items: center;
-    font-weight: 100;
-
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 200px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
 }
 
 .filter-container .sub-filter label {
-    min-width: 110px;
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
-select,
+.filter-container .sub-filter input,
+.filter-container .sub-filter select,
 .react-datepicker-wrapper input {
+    width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%;
-    min-width: 150px;
 }
 
 .print-history-table {
-    margin: 50px 0px;
     width: 100%;
+    margin: 50px 0px;
     border-collapse: collapse;
 }
 
 .print-history-table thead {
     background-color: #1257a6;
-    /* Dark blue color for the header */
     color: white;
 }
 
@@ -81,4 +81,52 @@ select,
     border: none;
     cursor: pointer;
     font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 933px) {
+    .filter-container{
+        display:block;
+    }
+}
+@media (max-width: 768px) {
+    
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-container .sub-filter {
+        max-width: 100%;
+    }
+
+    .print-history-table thead {
+        display:none;
+    }
+
+    .print-history-table tbody,
+    .print-history-table tr,
+    .print-history-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .print-history-table tr {
+        margin-bottom: 15px;
+    }
+
+    .print-history-table td {
+        text-align: left;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .print-history-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: calc(50% - 20px);
+        white-space: nowrap;
+        font-weight: bold;
+    }
 }
