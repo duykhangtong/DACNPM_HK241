@@ -4,6 +4,7 @@ const printerController = require('../controllers/printer.controller');
 const authJwt = require('../middleware/authJwt');
 
 
+router.get('/active', printerController.getActive);
 router.delete('/:id', printerController.removeById);
 router.put('/:id', printerController.updateState);
 //router.delete('/:id', [authJwt.AdminVerifyToken], printerController.removeById);
