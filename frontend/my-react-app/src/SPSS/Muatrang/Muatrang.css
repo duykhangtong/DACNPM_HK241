@@ -1,0 +1,161 @@
+/* Tổng container */
+.mt-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+  /* background-color: #f9f9f9; */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Khung bên trái và phải */
+.mt-left-box,
+.mt-right-box {
+  flex: 1;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0px;
+}
+.left_container_payment, .right_container_payment
+{
+  padding: 20px;
+}
+.vien_left, .vien_right {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px 10px 0 0;
+
+}
+.vien_left
+{
+  background: #007bff;
+}
+.vien_right
+{
+  background: #dd0a0ab9
+}
+.mt-left-box {
+  margin-right: 10px;
+}
+
+/* Tiêu đề */
+.mt-left-box h2
+ {
+  margin-bottom: 40px;
+  color: #0748e0b9;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  /* border-bottom: 2px solid #ddd; */
+  /* padding-bottom: 10px; */
+}
+.mt-right-box h2
+{
+  margin-bottom: 40px;
+  color: #c6103db9;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+ 
+}
+.mt-left-box h3 {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+/* Input và nhãn */
+.mt-left-box label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #444;
+}
+
+.mt-left-box input[type="number"],
+.mt-left-box input[type="text"] {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+}
+
+.mt-left-box input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+/* Nút chọn phương thức thanh toán */
+.mt-left-box button {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.mt-left-box button:hover {
+  background-color: #e9e9e9;
+  border-color: #007bff;
+}
+
+button.active {
+  border: 2px solid #007bff;
+  background-color: #eaf4ff;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Phần nút thanh toán */
+.mt-payment-button {
+  padding: 12px 20px;
+  background-color: #dd0a0ab9;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 20px;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.mt-payment-button:hover {
+  scale: 1.05;
+}
+
+/* Thông tin thanh toán bên phải */
+.mt-right-box p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 10px 0;
+}
+
+.mt-right-box p span {
+  font-weight: bold;
+}
+
+/* Căn chỉnh khoảng cách giữa các phần */
+.mt-left-box label,
+.mt-right-box p {
+  margin-bottom: 20px;
+}
+
+.mt-right-box {
+  text-align: center;
+}
+
+.mt-right-box button {
+  margin-top: 20px;
+}

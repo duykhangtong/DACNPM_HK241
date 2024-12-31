@@ -1,0 +1,190 @@
+.tt-navbar
+{
+    display: grid;
+    grid-template-columns: 15% 60% 10% 15%;
+    padding: 20px 0px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /* gap:20px; */
+    font-family: Inter, sans-serif;
+}
+.tt-SPSS {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: linear-gradient(45deg, #1B14EF, #322193); /* Gradient màu */
+    -webkit-background-clip: text; /* Chỉ áp dụng gradient vào chữ */
+    -webkit-text-fill-color: transparent; /* Làm cho phần còn lại trong suốt */
+   
+}
+
+.tt-logo-SPSS
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    gap:6px;
+    
+    font-weight: 500;
+}
+
+.tt-logo-SPSS img{
+width: 45px;
+height: 45px;
+background-color: white;
+}
+.SPSS-tt-nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap:40px;
+    align-items: center;
+    padding-right: 40px;
+    height: 100%;
+    margin: 0;
+    font-weight: bold;
+}
+.SPSS-tt-nav-links li {
+    margin: 0 30px;
+    height: 100%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.SPSS-tt-nav-links a {
+    text-decoration: none;
+    font-size: 17px;
+    padding: 5px 10px;
+}
+.tt-noactive
+{
+    color: #333;
+    transition: background-color 0.3s;
+}
+.tt-active
+{
+    background-color: #1CEC68;
+    border-radius: 20px;
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tt-notification
+{
+    display: flex;
+    align-items: center;  /* Vertically centers the bell icon */
+    justify-content: center; /* Horizontally centers the bell icon */
+    position: relative;
+    margin:auto;
+    height: 100%;
+   
+}
+.tt-notification:hover
+{
+    cursor: pointer;
+}
+/* .tt-user
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+} */
+.tt-user span
+{
+    margin-left: 10px;
+    margin-right: 5px;
+}
+.tt-user:hover
+{
+    cursor: pointer;
+}
+.tt-iconbell
+{
+    font-size: 24px;
+
+}
+.tt-iconuser
+{
+    font-size: 20px;
+}
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    right:-10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.tt-user {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .tt-iconuser,
+  .tt-angledown {
+    margin: 0 5px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  /* Dropdown menu container */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 20px);
+    left: -20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 90%; /* Đảm bảo menu có kích thước tối thiểu */
+    overflow: hidden; /* Loại bỏ viền thừa */
+}
+
+/* Dropdown button styles */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 15px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: transparent; /* Không có màu nền mặc định */
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer; /* Con trỏ chuột sẽ hiển thị khi hover */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+    color: #1d4ed8; /* Màu xanh khi hover */
+}
+
+/* Add subtle spacing between items */
+.dropdown-item + .dropdown-item {
+    border-top: 1px solid #eee; /* Viền ngăn cách giữa các button */
+}
+
+/* Focus styles (nếu cần accessibility) */
+.dropdown-item:focus {
+    outline: none;
+    background-color: #e2e8f0;
+    color: #1d4ed8;
+}
