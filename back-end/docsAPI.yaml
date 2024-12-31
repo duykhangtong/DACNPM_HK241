@@ -9,6 +9,8 @@ tags:
     description: API authen author
   - name: printer
     description: API printer
+  - name: print-order
+    description: API print order
 paths:
   /auth/signin:
     post:
@@ -200,6 +202,79 @@ paths:
       responses:
         default:
           description: delete successfully
+    put:
+      tags:
+        - printer
+      summary: update state
+      requestBody:
+        description: state of printer
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: boolean
+      responses:
+        default:
+          description: update successfull
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  brand:
+                    type: string
+                  machine_model:
+                    type: string
+                  state:
+                    type: boolean
+                  campus:
+                    type: string
+                  building:
+                    type: string
+                  room:
+                    type: string
+
+  /printOrders:
+    post:
+      tags:
+        - print-order
+      summary: add print order
+      requestBody:
+        description: print order info
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page_size:
+                  type: string
+                page_orientation:
+                  type: string
+                sided:
+                  type: string
+                pages_to_printed:
+                  type: number
+                pages_per_sheet:
+                  type: number
+                number_of_copies:
+                  type: number 
+                total_print_pages:
+                 type: number
+                file_id:
+                  type: object
+                printer_id:
+                  type: object
+        required: true
+      responses:
+        '200':
+          description: Add successfully
+    
+  
+
 
   /printOrders/my:
     get:
