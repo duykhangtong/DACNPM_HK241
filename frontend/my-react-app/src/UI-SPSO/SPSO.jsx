@@ -7,13 +7,14 @@ import { faAngleDown,faAngleRight, faAngleLeft } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {useState, useEffect, useRef} from 'react';
 import logoBK from '../../Image/logo_BK2-removebg.png';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, Outlet } from 'react-router-dom';
 import './SPSO.css';
 let user = "SPSO";
 function Header() 
 {
     const [notificationCount, setNotificationCount] = useState(3);
     return(
+    <div>
     <div className='tt-navbar'>
         <div className="tt-logo-SPSS">
             <span>
@@ -25,22 +26,22 @@ function Header()
         </div>
         <ul className="tt-nav-links">
                 <li>
-                    <NavLink to="/" end className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
+                    <NavLink to="/SPSO/trangchu" end className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
                         Trang chủ
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/manage" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
+                    <NavLink to="/SPSO/quanly" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
                         Quản Lý
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/printhistory" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
+                    <NavLink to="/SPSO/lichsuin" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
                         Lịch sử hệ thống
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/report" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
+                    <NavLink to="/SPSO/baocao" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
                         Báo Cáo
                     </NavLink>
                 </li>
@@ -57,18 +58,21 @@ function Header()
             <FontAwesomeIcon icon={faAngleDown} className="tt-angledown"/>
         </div>
     </div>
+            <Outlet />
+    </div>
     );
 }
+
 function SPSS()
 {
     return (
         <Router>
             <Header />
             <Routes>
-                <Route path="/" element={<HomePage/>} />
-                <Route path="/manage" element={<Manage/>} />
-                <Route path="/printhistory" element={<PrinhtHis />} />
-                <Route path="/report" element={<Report/>} />
+                <Route path="/SPSO/trangchu" element={<HomePage/>} />
+                <Route path="/SPSO/quanly" element={<Manage/>} />
+                <Route path="/SPSO/lichsuin" element={<PrinhtHis />} />
+                <Route path="/SPSO/baocao" element={<Report/>} />
             </Routes>
         </Router>
     );

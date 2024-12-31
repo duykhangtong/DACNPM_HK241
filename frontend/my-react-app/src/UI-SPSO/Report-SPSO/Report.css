@@ -1,12 +1,11 @@
 /* General styles */
-body {
+/* body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #f0f0f0;
-    /* Light Grey Background */
-}
+
+} */
 
 .container {
     max-width: 1200px;
@@ -37,7 +36,7 @@ body {
 
 /* Card styles */
 .card {
-    background-color: white;
+    background-color: #f0f0f0;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
