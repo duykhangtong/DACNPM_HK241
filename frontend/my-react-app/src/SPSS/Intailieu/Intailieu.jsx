@@ -1,9 +1,11 @@
-import './Intailieu.css'
-import React, {useState, useEffect, useRef} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import './Intailieu.css';
+import monster from '../../../Image/monster__1_-removebg-preview (1).png';
+import React, { useState, useEffect } from 'react';
 import plus from '../../../Image/Frame 46.png';
 import doc from '../../../Image/doc.png';
 import pdf from '../../../Image/pdf.png';
-import monster from '../../../Image/monster__1_-removebg-preview (1).png';
 import axios from 'axios'; // Import axios
 const FileConfigurationModal  = ({file, isVisible, onClose, onSave}) =>
 {
@@ -257,7 +259,11 @@ function Intailieu() {
               </div>
             ))}
           </div>
-         
+          <div className='printall-button'>
+          <button>
+              <FontAwesomeIcon icon={faPrint} className='print-icon' /> In tài liệu
+            </button>
+          </div>
         </div>
       </div>
       <FileConfigurationModal

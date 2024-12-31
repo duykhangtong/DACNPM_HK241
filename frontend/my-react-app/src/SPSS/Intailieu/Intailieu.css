@@ -397,8 +397,37 @@ input[type="file"] {
 {
     transform: translateY(-30%);
 }
+/* Button print all */
+.printall-button
+{
+  margin-top: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+}
+.printall-button button {
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #17a2b8 , #0056B3); /* Ocean blue gradient */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+}
 
+.printall-button button:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.printall-button button:active {
+  transform: scale(0.98); /* Slightly smaller on click */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Reduced shadow on click */
+}
 
 
 
