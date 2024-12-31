@@ -429,12 +429,144 @@ input[type="file"] {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Reduced shadow on click */
 }
 
+/* css cho phần in toàn bộ */
+.modal-overlay-modern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* animation: fadeIn 0.3s ease-in-out; */
+}
+
+.modal-box-modern-printall {
+  background: linear-gradient(145deg, #ffffff, #f7f7f7); /* Subtle gradient for modern look */
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 450px;
+  max-width: 90%;
+  height: 500px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Stronger shadow for better depth */
+  /* animation: scaleUp 0.3s ease-in-out; */
+  font-family: 'Roboto', sans-serif;
+  display: grid;
+  grid-template-rows: auto;
+}
+
+.modal-title-modern {
+  font-size: 1.3rem; /* Larger title font size */
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background: linear-gradient(90deg, #17a2b8, #007bff); /* Modern gradient background */
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  max-height: 50px;
+}
+.modal-content-modern
+{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal-content-modern p {
+  font-size: 1.1rem; /* Larger and consistent font size */
+  color: #333;
+  line-height: 1.6; /* Better spacing */
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-warning-modern {
+  color: #d9534f; /* Stronger warning color */
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
+  animation: shake 0.5s ease-in-out;
+}
+
+.modal-actions-modern {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.btn-modern {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 50%;
+  height: 70%;
+}
+
+.btn-modern.btn-confirm {
+  background: linear-gradient(90deg, #28a745, #218838); /* Smooth green gradient */
+  color: #ffffff;
+  flex: 1;
+}
+
+.btn-modern.btn-cancel {
+  background: linear-gradient(90deg, #dc3545, #c82333); /* Smooth red gradient */
+  color: #ffffff;
+  flex: 1;
+}
+
+.btn-modern:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Enhanced hover effect */
+}
+
+.btn-modern:active {
+  transform: scale(0.97);
+}
+
+.btn-modern:disabled {
+  background: #9e9e9e;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
 
 
-
-  
   /* Animation for modal appearance */
   @keyframes fadeIn {
     from {

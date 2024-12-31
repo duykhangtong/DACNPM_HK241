@@ -6,53 +6,54 @@ import React, { useState, useEffect } from 'react';
 import plus from '../../../Image/Frame 46.png';
 import doc from '../../../Image/doc.png';
 import pdf from '../../../Image/pdf.png';
-import axios from 'axios'; // Import axios
-const FileConfigurationModal  = ({file, isVisible, onClose, onSave}) =>
-{
-    
-    if(!isVisible) return null;
-    useEffect(() => {
-        const handleMouseMove = (event) => {
-          const eyes = document.querySelectorAll('.eye');
-          eyes.forEach((eye) => {
-            const pupil = eye.querySelector('.pupil');
-    
-            const eyeRect = eye.getBoundingClientRect();
-            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-    
-            const angle = Math.atan2(event.clientY - eyeCenterY, event.clientX - eyeCenterX);
-    
-            const maxDistance = eyeRect.width / 4;
-            const pupilX = Math.cos(angle) * maxDistance;
-            const pupilY = Math.sin(angle) * maxDistance;
-    
-            pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
-          });
-        };
-    
-        document.addEventListener('mousemove', handleMouseMove);
-        return () => {
-          document.removeEventListener('mousemove', handleMouseMove);
-        };
-      }, []);
-    return (
-        <div className="modal-overlay">
-        <div className="modal-content">
+import axios from 'axios';
+
+const FileConfigurationModal = ({ file, isVisible, onClose, onSave }) => {
+  if (!isVisible) return null;
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const eyes = document.querySelectorAll('.eye');
+      eyes.forEach((eye) => {
+        const pupil = eye.querySelector('.pupil');
+
+        const eyeRect = eye.getBoundingClientRect();
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+        const angle = Math.atan2(event.clientY - eyeCenterY, event.clientX - eyeCenterX);
+
+        const maxDistance = eyeRect.width / 4;
+        const pupilX = Math.cos(angle) * maxDistance;
+        const pupilY = Math.sin(angle) * maxDistance;
+
+        pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
         <div className="monster-container">
           <div className="monster">
-                <img src={monster} alt="Monster" />
-                <div className="eye" id="eye-left">
-                    <div className="pupil"></div>
-                </div>
-                <div className="eye" id="eye-right">
-                    <div className="pupil"></div>
-                </div>
+            <img src={monster} alt="Monster" />
+            <div className="eye" id="eye-left">
+              <div className="pupil"></div>
+            </div>
+            <div className="eye" id="eye-right">
+              <div className="pupil"></div>
+            </div>
           </div>
         </div>
         <div className='body-info-printer'>
-        <h3>Thay đổi thông số in</h3>
-        <div className="modal-body">
+          <h3>Thay đổi thông số in</h3>
+          <div className="modal-body">
             <label>
               <span>Máy in:</span>
               <select>
@@ -61,7 +62,7 @@ const FileConfigurationModal  = ({file, isVisible, onClose, onSave}) =>
               </select>
             </label>
             <label>
-            <span>Số trang:</span>
+              <span>Số trang:</span>
               <select>
                 <option>Toàn bộ</option>
                 <option>Tùy chọn</option>
@@ -75,63 +76,94 @@ const FileConfigurationModal  = ({file, isVisible, onClose, onSave}) =>
               </select>
             </label>
             <label>
-            <span>Khổ giấy:</span>
+              <span>Khổ giấy:</span>
               <select>
                 <option>A4</option>
                 <option>A3</option>
               </select>
             </label>
             <label>
-            <span>Hướng in:</span>
+              <span>Hướng in:</span>
               <select>
                 <option>Dọc</option>
                 <option>Ngang</option>
               </select>
             </label>
-
             <label>
-            <span>Số trang mỗi tờ:</span>
-            <select>
+              <span>Số trang mỗi tờ:</span>
+              <select>
                 <option>1</option>
                 <option>2</option>
                 <option>4</option>
-
-            </select>
+              </select>
             </label>
-      
             <label>
-            <span>Số lượng bản copies:</span>
-            <input 
-              type="number" 
-              min="1" 
-              max="100" 
-            />
+              <span>Số lượng bản copies:</span>
+              <input type="number" min="1" max="100" />
             </label>
-        </div>
-       
-        <div className="modal-footer">
+          </div>
+          <div className="modal-footer">
             <button onClick={onSave}>Xác nhận</button>
-        </div>
-        </div>
+          </div>
         </div>
       </div>
-    );
-}
+    </div>
+  );
+};
 
+const PrintConfirmationModal = React.memo(function PrintConfirmationModal({
+  isVisible,
+  onClose,
+  userPages,
+  documentPages,
+  onConfirm,
+}) {
+  if (!isVisible) return null;
 
+  const remainingPages = userPages - documentPages;
 
+  return (
+    <div className="modal-overlay-modern">
+      <div className="modal-box-modern-printall">
+        <h3 className="modal-title-modern">Xác nhận in tài liệu</h3>
+        <div className="modal-content-modern">
+          <p><strong>Số trang hiện có:</strong> {userPages}</p>
+          <p><strong>Số trang tài liệu:</strong> {documentPages}</p>
+          <p><strong>Số trang còn lại:</strong> {remainingPages < 0 ? 0 : remainingPages}</p>
+          {remainingPages < 0 && (
+            <p className="modal-warning-modern">
+              Bạn không đủ số trang để in tài liệu này.
+            </p>
+          )}
+        </div>
+        <div className="modal-actions-modern">
+          <button
+            className="btn-modern btn-confirm"
+            onClick={onConfirm}
+            disabled={remainingPages < 0}
+          >
+            Xác nhận
+          </button>
+          <button className="btn-modern btn-cancel" onClick={onClose}>
+            Hủy bỏ
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 function Intailieu() {
-  const [dbFiles, setDbFiles] = useState([]); // State for files from database
+  const [dbFiles, setDbFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // Fetch files from the database when the component mounts
+  const [userPages, setUserPages] = useState(100);
+  const [documentPages, setDocumentPages] = useState(10);
+  const [isModalVisible_printAll, setIsModalVisible_printAll] = useState(false);
   useEffect(() => {
     fetchFilesFromServer();
   }, []);
 
-  // Function to fetch files from the server
   const fetchFilesFromServer = () => {
     axios
       .get('http://localhost:80/api/file/store')
@@ -139,22 +171,20 @@ function Intailieu() {
         if (Array.isArray(response.data)) {
           setDbFiles(response.data);
         } else {
-          setDbFiles([]); // Nếu không phải mảng, gán mảng rỗng
+          setDbFiles([]);
           console.error('Expected an array but got:', response.data);
-        }      
+        }
       })
       .catch((error) => {
         console.error('Error fetching files', error);
       });
   };
 
-  // Handle file input change and upload files immediately
   const handleFileChange = (event) => {
     const filesToUpload = Array.from(event.target.files);
     handleUploadFiles(filesToUpload);
   };
 
-  // Upload files to the database
   const handleUploadFiles = (filesToUpload) => {
     const formData = new FormData();
     filesToUpload.forEach((file) => {
@@ -167,9 +197,7 @@ function Intailieu() {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((response) => {
-        console.log('Files uploaded successfully');
-        // Fetch the updated list of files from the database
+      .then(() => {
         fetchFilesFromServer();
       })
       .catch((error) => {
@@ -177,7 +205,6 @@ function Intailieu() {
       });
   };
 
-  // Handle editing of file configurations
   const handleEditClick = (file) => {
     setSelectedFile(file);
     setIsModalVisible(true);
@@ -187,18 +214,18 @@ function Intailieu() {
     setIsModalVisible(false);
     setSelectedFile(null);
   };
-
+  const handleCloseModal_printAll = () => {
+    setIsModalVisible_printAll(false);
+  };
   const handleSaveConfiguration = () => {
     console.log('Configuration saved for:', selectedFile);
     handleCloseModal();
   };
 
-  // Handle viewing file details
   const handleViewDetails = (fileId) => {
     axios
       .get(`http://localhost:80/api/file/${fileId}`, { responseType: 'blob' })
       .then((response) => {
-        console.log('Response:', response);
         const file = new Blob([response.data], {
           type: response.headers['content-type'],
         });
@@ -210,17 +237,24 @@ function Intailieu() {
       });
   };
 
-  // Handle file deletion
   const handleDeleteFile = (fileId) => {
     axios
       .delete(`http://localhost:80/api/file/${fileId}/delete`)
-      .then((response) => {
+      .then(() => {
         setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
-        console.log('File deleted successfully');
       })
       .catch((error) => {
         console.error('Error deleting file', error);
       });
+  };
+
+  const handleConfirmPrint = () => {
+    if (userPages >= documentPages) {
+      alert('In tài liệu thành công!');
+      setIsModalVisible_printAll(false);
+    } else {
+      alert('Không đủ số trang để in tài liệu này!');
+    }
   };
 
   return (
@@ -259,9 +293,9 @@ function Intailieu() {
               </div>
             ))}
           </div>
-          <div className='printall-button'>
-          <button>
-              <FontAwesomeIcon icon={faPrint} className='print-icon' /> In tài liệu
+          <div className="printall-button">
+            <button onClick={() => setIsModalVisible_printAll(true)}>
+              <FontAwesomeIcon icon={faPrint} className="print-icon" /> In tài liệu
             </button>
           </div>
         </div>
@@ -271,6 +305,13 @@ function Intailieu() {
         isVisible={isModalVisible}
         onClose={handleCloseModal}
         onSave={handleSaveConfiguration}
+      />
+      <PrintConfirmationModal
+        isVisible={isModalVisible_printAll}
+        onClose={handleCloseModal_printAll}
+        userPages={userPages}
+        documentPages={documentPages}
+        onConfirm={handleConfirmPrint}
       />
     </div>
   );
