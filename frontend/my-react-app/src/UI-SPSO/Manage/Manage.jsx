@@ -11,7 +11,7 @@ import logoBK from "../../../Image/logo_BK2-removebg.png";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:80/api", // Update this to your actual API URL
+  baseURL: "http://localhost:80/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -35,21 +35,18 @@ const deletePrinter = (printerId) => {
 };
 const updatePrinterState = (printerId, state) => {
   const url = `http://localhost:80/api/printers/${printerId}`;
-  return axios.put(
-    url,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return axios.put(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 function Manage() {
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [printerDetails, setPrinterDetails] = useState({
-    id : "",
+    id: "",
     name: "",
     brand: "",
     machine_model: "",
@@ -59,7 +56,15 @@ function Manage() {
     room: "",
   });
   const [printers, setPrinters] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const printersPerPage = 6;
+  const indexOfLastPrinter = currentPage * printersPerPage;
+  const indexOfFirstPrinter = indexOfLastPrinter - printersPerPage;
+  const currentPrinters = printers.slice(
+    indexOfFirstPrinter,
+    indexOfLastPrinter
+  );
+  const totalPages = Math.ceil(printers.length / printersPerPage);
   useEffect(() => {
     loadPrinters();
   }, []);
@@ -75,7 +80,7 @@ function Manage() {
 
   const handleAddPrinter = () => {
     setPrinterDetails({
-      id:"",
+      id: "",
       name: "",
       brand: "",
       machine_model: "",
@@ -117,7 +122,7 @@ function Manage() {
   const handleActivate = async () => {
     try {
       await updatePrinterState(printerDetails._id, true);
-   
+
       setPrinterDetails((prevDetails) => ({ ...prevDetails, state: true }));
       loadPrinters();
     } catch (error) {
@@ -133,10 +138,10 @@ function Manage() {
       console.error("Error updating printer state:", error);
     }
   };
-     console.log(printerDetails);
+  console.log(printerDetails);
 
   return (
-    <div>
+    <div className="managePage">
       <main className="container my-5">
         <div className="header">
           <h1>Danh sách máy in</h1>
@@ -234,12 +239,19 @@ function Manage() {
                 <option value={false}>Vô hiệu</option>
               </select>
             </div>
-            <button type="submit" className="btn-primary">
-              Lưu máy in
-            </button>
-            <button type="button" onClick={() => setShowForm(false)}>
-              Hủy
-            </button>
+
+            <div className="formChoice">
+              <button type="submit" className="btn-primary">
+                Lưu máy in
+              </button>
+              <button
+                type="button"
+                className="cancel"
+                onClick={() => setShowForm(false)}
+              >
+                Hủy
+              </button>
+            </div>
           </form>
         )}
         {showDetails && (
@@ -273,31 +285,52 @@ function Manage() {
             <button className="btn-disable" onClick={handleDisable}>
               Vô hiệu hóa
             </button>
-            <button onClick={() => setShowDetails(false)}>Trở lại</button>
+            <button className="cancel" onClick={() => setShowDetails(false)}>
+              Trở lại
+            </button>
           </div>
         )}
         <div className="printer-list">
-          {printers.map((printer, index) => (
+          {currentPrinters.map((printer, index) => (
             <div key={printer._id} className="printer-item">
               <img
                 src="https://phucanhcdn.com/media/product/23196_may_in_canon_lbp6230dn_03.jpg"
                 alt={`Máy in ${index + 1}`}
                 className="mx-auto mb-2"
               />
-              <button
-                className="btn-primary"
-                onClick={() => handlePrinterClick(index)}
-              >
-                Máy in {index + 1}
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => handleDeletePrinter(printer._id)}
-              >
-                Xóa
-              </button>
+
+              <div className="printerChoice">
+                {" "}
+                <button
+                  className="btn-primary"
+                  onClick={() => handlePrinterClick(index)}
+                >
+                  Máy in {indexOfFirstPrinter + index + 1}
+                </button>
+                <button
+                  className="btn-delete"
+                  onClick={() => handleDeletePrinter(printer._id)}
+                >
+                  Xóa máy in
+                </button>
+              </div>
             </div>
           ))}
+          <div className="pagination">
+            {" "}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`page-item ${
+                  currentPage === index + 1 ? "active" : ""
+                }`}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {" "}
+                {index + 1}{" "}
+              </button>
+            ))}{" "}
+          </div>
         </div>
       </main>
       <footer className="footer">
@@ -309,9 +342,15 @@ function Manage() {
           <div className="info">
             <span>DANH MỤC</span>
           </div>
-          <div className="info">Báo cáo</div>
-          <div className="info">Quản lý</div>
-          <div className="info">Lịch sử dịch vụ</div>
+          <div className="info">
+            <a href="/SPSO/baocao">Báo cáo</a>
+          </div>
+          <div className="info">
+            <a href="quanly">Quản lý</a>
+          </div>
+          <div className="info">
+            <a href="lichsuin">Lịch sử dịch vụ</a>
+          </div>
         </div>
         <div className="right">
           <div className="info">

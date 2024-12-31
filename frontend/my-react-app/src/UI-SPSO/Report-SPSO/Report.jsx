@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import './Report.css';
 import { useState } from 'react';
+import logoBK from "../../../Image/logo_BK2-removebg.png";
 function Report() {
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
     const years = Array.from({ length: 10 }, (_, i) => 2024 - i); // Hiển thị từ 2024 đến 2015
@@ -92,14 +93,14 @@ function Report() {
             </main>
             <footer className="footer">
                 <div className="footer-left d-flex align-items-center">
-                    <img src="https://placehold.co/50x50" alt="HCMUT logo" />
+                    <img src={logoBK} alt="HCMUT logo" />
                     <span className="info">HCMUT</span>
                 </div>
                 <div className="footer-center">
                     <div className="info"><span>DANH MỤC</span></div>
-                    <div className="info">Báo cáo</div>
-                    <div className="info">Quản lý</div>
-                    <div className="info">Lịch sử dịch vụ</div>
+                          <div className="info"><a href='/SPSO/baocao'>Báo cáo</a></div>
+          <div className="info"><a href='quanly'>Quản lý</a></div>
+          <div className="info"><a href='lichsuin'>Lịch sử dịch vụ</a></div>
                 </div>
                 <div className="footer-right">
                     <div className="info"><span>LIÊN HỆ</span></div>
