@@ -8,10 +8,13 @@ function PrintHistoryFilter() {
   const [selectedPrinter, setSelectedPrinter] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [printHistoryData, setPrintHistoryData] = useState([]);
-  const [printers, setPrinters] = useState([]);
-  const [fileDetails, setFileDetails] = useState({});
-  const [printerDetails, setPrinterDetails] = useState({});
+  const [printHistoryData, setPrintHistoryData] = useState([]); // Filtered data
+  const [allPrintHistoryData, setAllPrintHistoryData] = useState([]); // All data
+  const [printers, setPrinters] = useState([]); //Tất cả máy in
+  const [selectedPrintOrder, setSelectedPrintOrder] = useState(null); //xem chi tiết
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [sortByNearest, setSortByNearest] = useState(true); // Toggle sorting state
+
 //Láy thông tin lịch sư in
   const handleHistoryInfo = () => {
     axios
@@ -19,12 +22,12 @@ function PrintHistoryFilter() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        const printOrders = response.data;
+        let printOrders = response.data;
         const filePromises = printOrders.map((order) =>
           fetchFileName(order.file_id)
         );
         const printerPromises = printOrders.map((order) =>
-          fetchPrinterName(order.printer_id)
+            fetchPrinterDetails(order.printer_id)
         );
 
         Promise.all(filePromises).then((fileNames) => {
@@ -32,14 +35,19 @@ function PrintHistoryFilter() {
             const updatedPrintOrders = printOrders.map((order, index) => ({
               ...order,
               fileName: fileNames[index],
-              printerName: printerNames[index],
+              printerName: printerNames[index].name,
+              printerLocation: `${printerNames[index].campus} - ${printerNames[index].building} - ${printerNames[index].room}`
             }));
+            setAllPrintHistoryData(updatedPrintOrders);
             setPrintHistoryData(updatedPrintOrders);
+            setLoading(false);
           });
         });
       })
       .catch((error) => {
         console.error("Error fetching print history", error);
+        setLoading(false); // Set loading to false in case of error
+
       });
   };
 
@@ -55,35 +63,82 @@ function PrintHistoryFilter() {
       });
   };
 
-  const fetchPrinterName = (printerId) => {
+  const fetchPrinterDetails = (printerId) => {
     return axios
       .get(`http://localhost:80/api/printers/${printerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => response.data.name)
+      .then((response) => response.data)
       .catch((error) => {
         console.error("Error fetching printer name", error);
-        return "Unknown";
-      });
+        return { name: 'Unknown', campus: '', building: '', room: '' };
+    });
   };
 
+//   const handleSortByNearestDate = () => {
+//     const sortedData = [...printHistoryData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+//     setPrintHistoryData(sortedData);
+//   };
+
+//   const handleSortByFarthestDate = () => {
+//     const sortedData = [...printHistoryData].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+//     setPrintHistoryData(sortedData);
+//   };
+  const handleViewDetails = (printOrder) => {
+    setSelectedPrintOrder(printOrder);
+  };
+  const handleCloseDetails = () => {
+    setSelectedPrintOrder(null);
+  };
   const handleGetAllPrinter = () => {
     axios
       .get("http://localhost:80/api/printers")
       .then((response) => {
-        setPrinters(response.name);
+        setPrinters(response.data);
       })
       .catch((error) => {
         console.error("Error fetching printers", error);
       });
   };
 
+  const handleSortToggle = () => {
+    const sortedData = [...printHistoryData].sort((a, b) =>
+      sortByNearest ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setPrintHistoryData(sortedData);
+    setSortByNearest(!sortByNearest);
+  };
+
+  const filterPrintHistoryData = () => {
+    let filteredData = allPrintHistoryData;
+
+    if (selectedPrinter) {
+      filteredData = filteredData.filter((order) => order.printer_id === selectedPrinter);
+    }
+
+    if (startDate) {
+      filteredData = filteredData.filter((order) => new Date(order.createdAt) >= new Date(startDate));
+    }
+
+    if (endDate) {
+      filteredData = filteredData.filter((order) => new Date(order.createdAt) <= new Date(endDate));
+    }
+
+    setPrintHistoryData(filteredData);
+  };
   useEffect(() => {
-    handleHistory();
     handleGetAllPrinter();
+    handleHistoryInfo();
+    
   }, []);
+  
+  useEffect(() => {
+    filterPrintHistoryData();
+  }, [selectedPrinter, startDate, endDate]);
+
 
   return (
+    <div>
     <div className="his-container">
       <h2>Lịch sử in</h2>
       <div className="filter-container">
@@ -95,9 +150,7 @@ function PrintHistoryFilter() {
           >
             <option value="">Tất cả</option>
             {printers.map((printer, index) => (
-              <option key={index} value={printer}>
-                {printer}
-              </option>
+              <option key={index} value={printer._id}>{printer.name}</option>
             ))}
           </select>
         </div>
@@ -119,6 +172,9 @@ function PrintHistoryFilter() {
             placeholderText="dd/mm/yyyy"
           />
         </div>
+        <button className="filter-button" onClick={handleSortToggle}>
+          {sortByNearest ? 'Ngày xa nhất' : 'Ngày gần nhất'}
+        </button>
       </div>
 
       <table className="print-history-table">
@@ -127,6 +183,7 @@ function PrintHistoryFilter() {
             <th>STT</th>
             <th>Tên tài liệu</th>
             <th>Máy in</th>
+            <th>Địa điểm máy in</th>
             <th>Thời gian bắt đầu</th>
             <th>Trạng thái</th>
             <th>Xem chi tiết</th>
@@ -134,16 +191,37 @@ function PrintHistoryFilter() {
         </thead>
         <tbody>
           {printHistoryData.map((history, index) => (
-            <tr key={index}>
-              <td>{history.printer_id}</td>
+            <tr key={index+1}>
+                <td>{index+1}</td>
+              <td>{history.fileName}</td>
+              <td>{history.printerName}</td>
+              <td>{history.printerLocation}</td>
               <td>{new Date(history.createdAt).toLocaleDateString()}</td>
-              <td>{history.total_print_pages}</td>
               <td>{history.state}</td>
+              <td>
+                  <button onClick={() => handleViewDetails(history)}>Xem chi tiết</button>
+            </td>
             </tr>
+            
           ))}
         </tbody>
       </table>
     </div>
+    {selectedPrintOrder && (
+        <div className="his-print-modal-overlay">
+          <div className="hist-print-modal-content">
+            <h3>Chi tiết đơn in</h3>
+            <p><strong>Kích thước trang:</strong> {selectedPrintOrder.page_size}</p>
+            <p><strong>Hướng trang:</strong> {selectedPrintOrder.page_orientation}</p>
+            <p><strong>Tỷ lệ:</strong> {selectedPrintOrder.scale}</p>
+            <p><strong>Số trang cần in:</strong> {selectedPrintOrder.pages_to_printed}</p>
+            <p><strong>Số trang mỗi tờ:</strong> {selectedPrintOrder.pages_per_sheet}</p>
+            <p><strong>Tổng số trang in:</strong> {selectedPrintOrder.total_print_pages}</p>
+            <button onClick={handleCloseDetails}>Đóng</button>
+          </div>
+        </div>
+      )}
+      </div>
   );
 }
 export default PrintHistoryFilter;
