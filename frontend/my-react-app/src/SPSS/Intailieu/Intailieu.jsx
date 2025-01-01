@@ -165,8 +165,13 @@ function Intailieu() {
   }, []);
 
   const fetchFilesFromServer = () => {
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }
     axios
-      .get('http://localhost:80/api/file/store')
+      .get('http://localhost:80/api/file/store', config)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setDbFiles(response.data);
@@ -195,10 +200,14 @@ function Intailieu() {
       .post('http://localhost:80/api/file/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
         },
       })
       .then(() => {
         fetchFilesFromServer();
+      })
+      .then(() => {
+        
       })
       .catch((error) => {
         console.error('Error uploading files', error);
