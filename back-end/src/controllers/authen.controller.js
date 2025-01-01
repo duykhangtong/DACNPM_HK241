@@ -18,7 +18,7 @@ const signin = async (req, res) => {
                 return res.status(401).json({ message: 'Invalid Password!' });
             }
 
-            const token = jwt.sign({ roleType: user.role_type, role: user.role }, config.secret, { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: 1800, });
+            const token = jwt.sign({ roleType: user.role_type, role: user.role }, config.secret, { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: 1 * 24 * 60 * 60 * 60, });
 
             if (user.role_type === "client") {
                 Client.findByIdAndUpdate(user.role, { last_login: Date.now() }, { returnDocument: 'after' })

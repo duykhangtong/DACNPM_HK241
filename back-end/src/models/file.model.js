@@ -6,7 +6,10 @@ const File = new mongoose.Schema({
   buffer: Buffer,
   pageNumber: {type: Number, default: 0},
   mimetype: String,
-  isTransaction: {type: Boolean, default: false},
+  client_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client'
+  },
 },{
   timestamps: true
 });
