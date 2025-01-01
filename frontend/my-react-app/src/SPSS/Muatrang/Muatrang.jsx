@@ -1,5 +1,7 @@
 import './Muatrang.css';
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Muatrangin = () => {
   const [pages, setPages] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -19,8 +21,28 @@ const Muatrangin = () => {
   };
 
   const handleSubmit = () => {
-    alert(`Thanh toán thành công! Bạn đã mua ${pages} trang với tổng số tiền $${totalAmount}`);
-  };
+    if(pages > 0){
+    toast.success(`Thanh toán thành công`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  } else {
+    toast.error(`Thanh toán thất bại`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+    };
 
   return (
     <div className="mt-container">
@@ -112,6 +134,7 @@ const Muatrangin = () => {
         </button>
       </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
