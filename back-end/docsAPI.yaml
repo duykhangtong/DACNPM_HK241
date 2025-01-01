@@ -11,6 +11,8 @@ tags:
     description: API printer
   - name: print-order
     description: API print order
+  - name: account
+    description: API account
 paths:
   /auth/signin:
     post:
@@ -73,21 +75,6 @@ paths:
         default:
           description: Logout successfully
   
-  /test/public:
-    get:
-      tags:
-        - authen-author
-      summary: author public
-      operationId: public
-      responses:
-        default:
-          description: access public board successfully
-          content:
-            application/json:
-              schema:
-                type: string
-                example: Public content!!!!
-  
   /test/client:
     get:
       tags:
@@ -141,7 +128,7 @@ paths:
     get:
       tags:
         - printer
-      summary: get all printer
+      summary: get all printer (printer, Lich su in SPSO)
       responses:
         default:
           description: get successfull
@@ -194,6 +181,7 @@ paths:
       responses:
         '200':
           description: Add successfully
+
   /printers/{id}:
     delete:
       tags:
@@ -202,6 +190,7 @@ paths:
       responses:
         default:
           description: delete successfully
+    
     put:
       tags:
         - printer
@@ -265,13 +254,51 @@ paths:
                 total_print_pages:
                  type: number
                 file_id:
-                  type: object
+                  type: string
                 printer_id:
-                  type: object
+                  type: string
         required: true
       responses:
         '200':
           description: Add successfully
+
+    get: 
+      tags:
+        - print-order
+      summary: get all print order (Lich su in SPSO)
+      responses:
+        '200':
+          description: get Print Order successfully
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  client_id:
+                    type: string
+                  printer_id:
+                    type: string
+                  file_id:
+                    type: string
+                  page_size:
+                    type: string
+                  page_orientation:
+                    type: string
+                  state:
+                    type: string
+                  scale:
+                    type: number
+                  pages_to_printed:
+                    type: string
+                  pages_per_sheet:
+                    type: string
+                  total_print_pages:
+                    type: string
+                  isTransaction:
+                    type: boolean
+
     
   
 
@@ -279,7 +306,7 @@ paths:
   /printOrders/my:
     get:
       tags:
-        - Print Order
+        - print-order
       summary: get Order by client 
       requestBody:
         description: get all Order by client
@@ -289,111 +316,113 @@ paths:
               type: object
               properties:
                 client_id:
-                  type: ObjectId
+                  type: string
         required: true
       responses:
         '200':
           description: get Print Order successfully
           content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  client_id:
+                    type: string
+                  printer_id:
+                    type: string
+                  file_id:
+                    type: string
+                  page_size:
+                    type: string
+                  page_orientation:
+                    type: string
+                  state:
+                    type: string
+                  scale:
+                    type: number
+                  pages_to_printed:
+                    type: string
+                  pages_per_sheet:
+                    type: string
+                  total_print_pages:
+                    type: string
+                  isTransaction:
+                    type: boolean
+
+  /printOrders/confirm:
+    patch:
+      tags:
+      - print-order
+      summary: Confirm Print Order
+    
+      requestBody:
+        content:
           application/json:
             schema:
               type: object
               properties:
                 _id:
-                  type: ObjectId
-                client_id:
-                  type: ObjectId
-                printer_id:
-                  type: ObjectId
-                file_id:
-                  type: ObjectId
-                page_size:
                   type: string
-                page_orientation:
-                  type: string
-                state:
-                  type: string
-                scale:
-                  type: Number
-                pages_to_printed:
-                  type: string
-                pages_per_sheet:
-                  type: string
-                total_print_pages:
-                  type: string
-                isTransaction:
-                  type: boolean
-
-  /printOrders/confirm:
-   patch:
-   summary: Confirm Print Order
-    tags:
-      - Print Order
-    requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            _id:
-              type: ObjectId
         required: true
       responses:
         '200':
           description: Confirm Print Order successfully
           content: 
-          application/json:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  client_id:
+                    type: string
+                  printer_id:
+                    type: string
+                  file_id:
+                    type: string
+                  page_size:
+                    type: string
+                  page_orientation:
+                    type: string
+                  state:
+                    type: string
+                  scale:
+                    type: number
+                  pages_to_printed:
+                    type: string
+                  pages_per_sheet:
+                    type: string
+                  total_print_pages:
+                    type: string
+                  isTransaction:
+                    type: boolean
+
+  /printOrders/:id/update:
+    put:
+      tags:
+      - print-order
+      summary: Update Print Order
+    
+      requestBody:
+        content:  
+          application/json: 
             schema:
               type: object
               properties:
-                _id:
-                  type: ObjectId
-                client_id:
-                  type: ObjectId
                 printer_id:
-                  type: ObjectId
-                file_id:
-                  type: ObjectId
+                  type: string
                 page_size:
                   type: string
                 page_orientation:
                   type: string
-                state:
-                  type: string
-                scale:
-                  type: Number
-                pages_to_printed:
+                sided:
                   type: string
                 pages_per_sheet:
                   type: string
-                total_print_pages:
+                number_of_copies:
                   type: string
-                isTransaction:
-                  type: boolean
-
-  /printOrders/:id/update:
-    put:
-    summary: Update Print Order
-    tags:
-      - Print Order
-    requestBody:
-      content:  
-        application/json: 
-        schema:
-        type: object
-        properties:
-          printer_id:
-            type: ObjectId
-          page_size:
-            type: string
-          page_orientation:
-            type: string
-          sided:
-            type: string
-          pages_per_sheet:
-            type: string
-          number_of_copies:
-            type: string
         required: true
       responses:
         200:
@@ -404,13 +433,13 @@ paths:
                 type: object
                 properties:
                   _id:
-                    type: ObjectId
+                    type: string
                   client_id:
-                    type: ObjectId
+                    type: string
                   printer_id:
-                    type: ObjectId
+                    type: string
                   file_id:
-                    type: ObjectId
+                    type: string
                   page_size:
                     type: string
                   page_orientation:
@@ -418,7 +447,7 @@ paths:
                   state:
                     type: string
                   scale:
-                    type: Number
+                    type: number
                   pages_to_printed:
                     type: string
                   pages_per_sheet:
@@ -428,50 +457,52 @@ paths:
                   isTransaction:
                     type: boolean
 
-  /printOrders/create:
-    post:
-    summary: Create Print Order
-    tags:
-      - Print Order
-    requestBody:
-      content:  
-        application/json: 
-        schema:
-        type: object
-        properties:
-          client_id:
-            type: ObjectId
-          printer_id:
-            type: ObjectId
-          file_id:
-            type: ObjectId
-          page_size:
+  /printOrders/filterSPSO:
+    get:
+      tags:
+        - print-order
+      summary: filter (Lich su in SPSO)
+      parameters:
+        - in: query
+          name: client_id
+          schema:
             type: string
-          page_orientation:
+          required: false
+          description: filter by client_id
+        - in: query
+          name: printer_id
+          schema:
             type: string
-          sided:
+          required: false
+          description: filter by printer_id
+        - in: query
+          name: startDate
+          schema:
             type: string
-          pages_per_sheet:
+          required: false
+          description: filter by state
+        - in: query
+          name: endDate
+          schema:
             type: string
-          number_of_copies:
-            type: string
-        required: true
+          required: false
+          description: filter by state
       responses:
-        200:
-          description: Create Print Order successfully
+        '200':
+          description: filter successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   _id:
-                    type: ObjectId
+                    type: string
                   client_id:
-                    type: ObjectId
+                    type: string
                   printer_id:
-                    type: ObjectId
+                    type: string
                   file_id:
-                    type: ObjectId
+                    type: string
                   page_size:
                     type: string
                   page_orientation:
@@ -479,7 +510,7 @@ paths:
                   state:
                     type: string
                   scale:
-                    type: Number
+                    type: number
                   pages_to_printed:
                     type: string
                   pages_per_sheet:
@@ -488,6 +519,49 @@ paths:
                     type: string
                   isTransaction:
                     type: boolean
+
+  /account/updatePage:
+    put:
+      tags:
+        - account
+      summary: update number of page (Printing)
+      requestBody:
+        description: update number of page
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                total_print_pages:
+                  type: number
+        required: true
+      responses:
+        '200':
+          description: update successfully
+
+  /account/allClient:
+    get:
+      tags:
+        - account
+      summary: get all client (Lich su in SPSO)
+      responses:
+        '200':
+          description: get all client successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  full_name:
+                    type: string
+                  number_page:
+                    type: number
+                  last_login:
+                    type: string
+          
+  
    
 
 

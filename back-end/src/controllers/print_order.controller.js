@@ -1,5 +1,6 @@
 const PrintOrder = require('../models/print_order.model');
 const Client = require('../models/client.model');
+const { default: mongoose } = require('mongoose');
 
 const create = async (req, res, next) => {
     const { page_size, page_orientation, sided, pages_to_printed, file_id, printer_id } = req.body;
@@ -28,11 +29,11 @@ const calculateTotalPrintPages = (page_size, sided, pages_per_sheet, pages_to_pr
 }
 // [PUT] /api/printOrders/:id/update
 const updateOrder = async (req, res, next) => {
-    const { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies} = req.body;
+    const { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies } = req.body;
 
     try {
         const printerOrder = await PrintOrder.findByIdAndUpdate(req.params.id, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
-        
+
         printerOrder.total_print_pages = calculateTotalPrintPages(page_size, sided, pages_per_sheet, printerOrder.pages_to_printed, number_of_copies);
 
         res.json({
@@ -49,7 +50,7 @@ const updateOrder = async (req, res, next) => {
 const confirm = async (req, res, next) => {
     try {
         const printOrder = await PrintOrder.findByIdAndUpdate(req.body.id, { isTransaction: true }, { returnDocument: "after" });
-        
+
         res.status(200).json({
             message: "Confirm print order successfully!!!",
             data: printOrder
@@ -62,7 +63,7 @@ const confirm = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
     const clientId = req.body.id;
-    await PrintOrder.findById({client_id: clientId, isTransaction: false})
+    await PrintOrder.findById({ client_id: clientId, isTransaction: false })
         .then(printOrder => res.json(printOrder))
         .catch(err => next(err));
 }
@@ -113,4 +114,40 @@ const filterByDate = async (req, res, next) => {
     }
 
 }
-module.exports = { create, getAll, getById, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm };
+
+const filterSPSO = async (req, res, next) => {
+    try {
+        const { client_id, printer_id, startDate, endDate } = req.query;
+        const filter = {};
+
+        if (startDate) {
+            filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) };
+            if (endDate) {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+            }
+        } else {
+            if (endDate) {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+            } else {
+                filter.createdAt = { ...filter.createdAt, $lte: new Date().setUTCHours(23, 59, 59, 999) };
+            }
+        }
+
+        if (client_id) {
+            filter.client_id = new mongoose.Types.ObjectId(client_id);
+        }
+
+        if (printer_id) {
+            filter.printer_id = new mongoose.Types.ObjectId(printer_id);
+        }
+
+        const printOrders = await PrintOrder.find(filter).exec();
+        res.json(printOrders);
+
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+module.exports = { create, getAll, getById, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO };
