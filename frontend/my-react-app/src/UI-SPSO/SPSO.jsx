@@ -63,18 +63,5 @@ function Header()
     );
 }
 
-function SPSS()
-{
-    return (
-        <Router>
-            <Header />
-            <Routes>
-                <Route path="/SPSO/trangchu" element={<HomePage/>} />
-                <Route path="/SPSO/quanly" element={<Manage/>} />
-                <Route path="/SPSO/lichsuin" element={<PrinhtHis />} />
-                <Route path="/SPSO/baocao" element={<Report/>} />
-            </Routes>
-        </Router>
-    );
-}
-export default SPSS;
+export default Header;
+
