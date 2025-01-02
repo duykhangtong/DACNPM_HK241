@@ -33,7 +33,7 @@ const updateOrder = async (req, res, next) => {
     const { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies } = req.body;
 
     try {
-        const printerOrder = await PrintOrder.findOneAndUpdate({file_id: req.params.id}, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
+        const printerOrder = await PrintOrder.findOneAndUpdate({ file_id: req.params.id }, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
 
         printerOrder.total_print_pages = calculateTotalPrintPages(page_size, sided, pages_per_sheet, printerOrder.pages_to_printed, number_of_copies);
 
@@ -52,7 +52,7 @@ const updateOrder = async (req, res, next) => {
 // [PATCH] /api/printOrders/confirm
 const confirm = async (req, res, next) => {
     try {
-        const printOrder = await PrintOrder.findByIdAndUpdate(req.body.id, { isTransaction: true }, { returnDocument: "after" });
+        const printOrder = await PrintOrder.findByIdAndUpdate(req.body.id, { isTransaction: true, start_time: Date.now() }, { returnDocument: "after" });
 
         res.status(200).json({
             message: "Confirm print order successfully!!!",
@@ -110,18 +110,19 @@ const filterByDate = async (req, res, next) => {
         const { startDate, endDate } = req.query;
 
         const filter = {};
+
+        filter.client_id = req.role;
+        filter.isTransaction = true;
         if (startDate) {
-            filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) };
+            filter.start_time = { ...filter.start_time, $gte: new Date(startDate) };
             if (endDate) {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
-            } else {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date(startDate).setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
             }
         } else {
             if (endDate) {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
             } else {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date().setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date().setUTCHours(23, 59, 59, 999) };
             }
         }
 
@@ -140,16 +141,18 @@ const filterSPSO = async (req, res, next) => {
         const { client_id, printer_id, startDate, endDate } = req.query;
         const filter = {};
 
+        filter.isTransaction = true;
+
         if (startDate) {
-            filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) };
+            filter.start_time = { ...filter.start_time, $gte: new Date(startDate) };
             if (endDate) {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
             }
         } else {
             if (endDate) {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date(endDate).setUTCHours(23, 59, 59, 999) };
             } else {
-                filter.createdAt = { ...filter.createdAt, $lte: new Date().setUTCHours(23, 59, 59, 999) };
+                filter.start_time = { ...filter.start_time, $lte: new Date().setUTCHours(23, 59, 59, 999) };
             }
         }
 
