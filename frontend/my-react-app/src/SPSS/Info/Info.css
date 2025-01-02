@@ -5,6 +5,7 @@
   padding: 20px;
   background-color: #f8f9fa; /* Light background to match navbar theme */
   overflow-y: auto; /* Allows scrolling if content overflows */
+  margin-top: 50px;
 }
 
 /* Info Container */

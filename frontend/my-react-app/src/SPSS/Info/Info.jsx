@@ -4,19 +4,20 @@ import axios from "axios";
 const Info = () => {
   const [userData, setUserData] = useState({
     full_name: "",
+    number_page: "",
+    last_login: "",
     email: "",
-    phone_number: "",
   });
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("access_token");
-        const response = await axios.get("http://localhost:5000/api/spso", {
+        const response = await axios.get("http://localhost:80/api/account/client", {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        const { full_name, email, phone_number } = response.data;
-        setUserData({ full_name, email, phone_number });
+        const { full_name,number_page,last_login, email} = response.data;
+        setUserData({ full_name,number_page,last_login, email});
       } catch (err) {
         console.error("Error fetching data:", err.response?.data || err.message);
       }
@@ -58,7 +59,10 @@ const Info = () => {
             </div>
             <div>
               <p>
-                <strong className="olala">Last Recently:</strong> {userData.phone_number || "Loading..."}              
+                <strong className="olala">Last Login:</strong> {userData.last_login || "Loading..."}              
+              </p>
+              <p>
+                <strong className="olala">Current Pages</strong> {userData.number_page || "Loading..."}              
               </p>
             </div>
     

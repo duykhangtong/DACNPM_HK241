@@ -53,7 +53,7 @@ function PrintHistoryFilter() {
 
   const fetchFileName = (fileId) => {
     return axios
-      .get(`http://localhost:80/api/file/${fileId}`, {
+      .get(`http://localhost:80/api/file/${fileId}/infor`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => response.data.originalname)
@@ -173,7 +173,7 @@ function PrintHistoryFilter() {
           />
         </div>
         <button className="filter-button" onClick={handleSortToggle}>
-          {sortByNearest ? 'Ngày xa nhất' : 'Ngày gần nhất'}
+          {sortByNearest ? 'Ngày gần nhất' : 'Ngày xa nhất'}
         </button>
       </div>
 
