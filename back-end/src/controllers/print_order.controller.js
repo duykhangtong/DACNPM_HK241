@@ -33,7 +33,7 @@ const updateOrder = async (req, res, next) => {
     const { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies } = req.body;
 
     try {
-        const printerOrder = await PrintOrder.findOneAndUpdate({file_id: req.params.id}, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
+        const printerOrder = await PrintOrder.findByIdAndUpdate(req.params.id, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
 
         printerOrder.total_print_pages = calculateTotalPrintPages(page_size, sided, pages_per_sheet, printerOrder.pages_to_printed, number_of_copies);
 
@@ -81,12 +81,12 @@ const deleteOrder = async (req, res, next) => {
     }
 }
 
-const getById = async (req, res, next) => {
-    const clientId = req.role;
-    await PrintOrder.findById({ client_id: clientId, isTransaction: false })
-        .then(printOrder => res.json(printOrder))
-        .catch(err => next(err));
-}
+// const getById = async (req, res, next) => {
+//     const clientId = req.role;
+//     await PrintOrder.findById({ client_id: clientId, isTransaction: false })
+//         .then(printOrder => res.json(printOrder))
+//         .catch(err => next(err));
+// }
 
 const set_state_and_endtime = async (req, res, next) => {
     const id = req.params.id;
@@ -99,7 +99,7 @@ const set_state_and_endtime = async (req, res, next) => {
 
 const getByUserId = async (req, res, next) => {
     const client_id = req.role;
-    await PrintOrder.find({ client_id: client_id })
+    await PrintOrder.find({ client_id: client_id, isTransaction: false })
         .then(printOrders => res.json(printOrders))
         .catch(err => next(err));
 }
@@ -170,4 +170,4 @@ const filterSPSO = async (req, res, next) => {
         next(error);
     }
 }
-module.exports = { create, getAll, getById, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO, deleteOrder };
+module.exports = { create, getAll, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO, deleteOrder };

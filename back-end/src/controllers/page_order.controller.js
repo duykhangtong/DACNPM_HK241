@@ -6,7 +6,7 @@ const create = (req, res, next) => {
     const { number_of_page } = req.body;
     const money_amount = number_of_page * 500;
     const client_id = req.role;
-    const pageOrder = new PageOrder({ number_of_page, money_amount, state, client_id });
+    const pageOrder = new PageOrder({ number_of_page, money_amount, client_id });
     pageOrder.save()
         .then(() => res.status(200).send('Buy print page successfully!!!'))
         .then(async () => {

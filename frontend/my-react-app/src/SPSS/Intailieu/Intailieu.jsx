@@ -8,17 +8,17 @@ import doc from '../../../Image/doc.png';
 import pdf from '../../../Image/pdf.png';
 import axios from 'axios';
 
-const FileConfigurationModal = ({ file, isVisible, onClose, trigger, setTrigger, onSave,printers }) => {
+const FileConfigurationModal = ({ Order, isVisible, onClose, trigger, setTrigger, onSave, printers }) => {
   if (!isVisible) return null;
   const token = localStorage.getItem('access_token');
-  const [copies, setCopies] = useState(1); // Default number of copies is 1
+  const [copies, setCopies] = useState(Order.number_of_copies); // Default number of copies is 1
   // const [printers, setPrinters] = useState([]);
-  const [selectedPrinter, setSelectedPrinter] = useState('');
+  const [selectedPrinter, setSelectedPrinter] = useState(Order.printer_id);
   // const [pageRange, setPageRange] = useState('Toàn bộ');
-  const [printSide, setPrintSide] = useState("double-sided");
-  const [paperSize, setPaperSize] = useState('A4');
-  const [orientation, setOrientation] = useState("vertical");
-  const [pagesPerSheet, setPagesPerSheet] = useState(1);
+  const [printSide, setPrintSide] = useState(Order.sided);
+  const [paperSize, setPaperSize] = useState(Order.page_size);
+  const [orientation, setOrientation] = useState(Order.page_orientation);
+  const [pagesPerSheet, setPagesPerSheet] = useState(Order.pages_per_sheet);
   
 
   const handleSave = () => {
@@ -30,9 +30,8 @@ const FileConfigurationModal = ({ file, isVisible, onClose, trigger, setTrigger,
       pages_per_sheet: pagesPerSheet,
       number_of_copies: copies
     };
-    console.log('printOrderData', printOrderData);
     axios
-      .put(`http://localhost:80/api/printOrders/${file._id}/update`, printOrderData, {
+      .put(`http://localhost:80/api/printOrders/${Order._id}/update`, printOrderData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -46,9 +45,6 @@ const FileConfigurationModal = ({ file, isVisible, onClose, trigger, setTrigger,
   };
 
   useEffect(() => {
-    if (printers.length > 0) {
-      setSelectedPrinter(printers[0]._id); // Default to the first printer
-    }
     const handleMouseMove = (event) => {
       const eyes = document.querySelectorAll('.eye');
       eyes.forEach((eye) => {
@@ -204,11 +200,11 @@ function Intailieu() {
   const [printers, setPrinters] = useState([]); // Add printers state here
   const token = localStorage.getItem("access_token");
   useEffect(() => {
-    fetchFilesFromServer();
     getPossiblePrinters();
   }, []);
 
   useEffect(() => {
+    fetchFilesFromServer();
     fetchOrder();
   }, [trigger])
 
@@ -258,6 +254,7 @@ function Intailieu() {
     if(!printOrder.data && !printOrder.data.length) {
       return;
     }
+    console.log(printOrder.data);
     let total = 0;
     printOrder.data.forEach((order) => {
       total += order.total_print_pages;
@@ -289,7 +286,7 @@ function Intailieu() {
         res.data.data.forEach((file) => {
           createPrintOrder(file);
         })
-        fetchFilesFromServer();
+        setTrigger(!trigger);
       })
       .catch((error) => {
         console.error('Error uploading files', error);
@@ -320,7 +317,8 @@ function Intailieu() {
 
 
   const handleEditClick = (file) => {
-    setSelectedFile(file);
+    const order = printOrder.find((order) => order.file_id === file._id);
+    setSelectedFile(order);
     setIsModalVisible(true);
   };
 
@@ -372,6 +370,22 @@ function Intailieu() {
       });
   };
 
+  const handleUpdateFile = (fileId) => {
+    axios.put('http://localhost:80/api/file/update', {
+      id: fileId,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) => {
+      res.status === 200 && fetchFilesFromServer();
+    })
+    .catch((err) => {
+      console.error('Error updating file', err);
+    })
+  }
+
   const deleteOrder = (file_id) => {
     axios.delete(`http://localhost:80/api/printOrders/${file_id}/delete`, {
       headers: {
@@ -385,6 +399,8 @@ function Intailieu() {
       orders.map((order) => {
         confirmPrintOrder(order._id);
       })
+      setTrigger(!trigger);
+      alert('Đã xác nhận in tài liệu!');
     } else {
       alert('Không đủ số trang để in tài liệu này!');
     }
@@ -399,9 +415,7 @@ function Intailieu() {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then((res) => {
-        res.data.file_id && handleDeleteFile(res.data.file_id);
-        alert('In tài liệu thành công!');
-
+        res.data.file_id && handleUpdateFile(res.data.file_id);
         setIsModalVisible_printAll(false);
       })
       .catch((error) => {
@@ -454,7 +468,7 @@ function Intailieu() {
         </div>
       </div>
       <FileConfigurationModal
-        file={selectedFile}
+        Order={selectedFile}
         trigger={trigger}
         setTrigger={setTrigger}
         isVisible={isModalVisible}

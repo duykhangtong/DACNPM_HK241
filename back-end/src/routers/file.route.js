@@ -12,6 +12,7 @@ router.get('/:id', [authJwt.ClientVerifyToken], fileController.getById);
 router.get('/:id/infor', [authJwt.ClientVerifyToken], fileController.getByIdInfor);
 router.get('/:id/review', fileController.review);
 router.delete('/:id/delete', [authJwt.ClientVerifyToken], fileController.remove);
+router.put('/update', [authJwt.ClientVerifyToken], fileController.update);
 
 
 module.exports = router;
