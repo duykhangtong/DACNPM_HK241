@@ -5,7 +5,7 @@ const authJwt = require('../middleware/authJwt');
 
 router.get('/my', [authJwt.ClientVerifyToken], pageOrderController.getByUserId);
 router.post('/', [authJwt.ClientVerifyToken], pageOrderController.create);
-router.patch('/update/:id.:number_page', pageOrderController.update);
+// router.patch('/update/:id.:number_page', pageOrderController.update);
 router.get('/', pageOrderController.getAll);
 
 module.exports = router;
