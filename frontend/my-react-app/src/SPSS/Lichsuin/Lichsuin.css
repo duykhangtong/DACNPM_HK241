@@ -3,7 +3,7 @@
     box-sizing: border-box;
 }
 .his-container {
-    width: 80%;
+    width: 90%;
     font-family: Arial, sans-serif;
     margin: auto;
 }
@@ -71,4 +71,142 @@ select, .react-datepicker-wrapper input {
     border: none;
     cursor: pointer;
     font-size: 16px;
+}
+
+.his-print-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.hist-print-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.hist-print-modal-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.hist-print-modal-content p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.hist-print-modal-content button {
+    background-color: #1257a6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.hist-print-modal-content button:hover {
+    background-color: #0e4a8a;
+}
+
+.filter-button {
+    background-color: #1257a6; /* Dark blue background color */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    padding: 10px 20px; 
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 0.9rem; /* Font size */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for background color and transform */
+  text-align: center;
+}
+
+.filter-button:hover {
+    background-color: #0e4a8a; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+
+/* Phần chi tiết */
+.details-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4; /* Light gray background */
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    gap: 5px;
+    transition: all 0.3s ease;
+    margin: auto;
+}
+
+.details-button{
+    background: none;
+  border: none;
+  cursor: pointer;
+  color: #1257a6;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-badge-fake {
+    font-weight: bold;
+    font-size: 0.7rem;
+    text-transform: capitalize;
+    width: 70%;
+    border-radius: 20px;
+    padding: 10px;
+    margin: auto;
+}
+
+/* Trạng thái Pending */
+.status-badge-fake.pending {
+    background-color: #f4c430; /* Gold background */
+    color: #fff; /* White text */
+}
+
+/* Trạng thái Hoàn tất */
+.status-badge-fake.completed {
+    background-color: #28a745; /* Green background */
+    color: #fff; /* White text */
+}
+
+
+
+
+
+
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
