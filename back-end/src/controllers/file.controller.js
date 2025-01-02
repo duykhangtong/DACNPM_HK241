@@ -21,7 +21,7 @@ const getDocxPage = async(buffer) => {
 const upload = async (req, res, next) => {
   try {
     if(!req.files || req.files.length === 0){
-      return res.status(400).json({ error : 'No files were uploaded!'});
+      return res.json({ error : 'No files were uploaded!'});
     }
 
     const client_id = req.role;
@@ -77,9 +77,9 @@ const getAll = async (req, res, next) => {
 
 const getAllById = async (req, res, next) => {
   try {
-    const files = await File.find({client_id: req.role});
+    const files = await File.find({client_id: req.role, isTransaction: false});
     if( !files || files.length === 0 ){
-      return res.status(404).json({ message: 'No files found.' });
+      return res.json({ message: 'No files found.' });
     }
 
     res.status(200).json(files);
@@ -94,7 +94,7 @@ const getById = async (req, res, next) => {
   try {
     const file = await File.findById(req.params.id);
     if(!file) {
-      return res.status(404).json({ message: 'File not found.' });
+      return res.json({ message: 'File not found.' });
     }
     
     const safeFilename = encodeURIComponent(file.originalname.trim());
@@ -190,7 +190,7 @@ const review = async (req, res, next) => {
 // [DELETE] /api/file/:id/delete
 const remove = async (req, res, next) => {
   try {
-    const deleteFile = await File.deleteOne({_id: req.params.id});
+    const deleteFile = await File.deleteOne({_id: req.params.id, isTransaction: false});
     
     const check = await File.findById(deleteFile._id);
     if(!check){
@@ -203,6 +203,23 @@ const remove = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const file = await File.findById(req.body.id);
+    if(!file) {
+      return res.status(404).json({ message: 'File not found.' });
+    }
 
-module.exports = { upload , getAll, getAllById, getById, getByIdInfor, review, remove };
+    file.buffer = null;
+    file.isTransaction = true;
+    await file.save();
+    res.status(200).json({ message: 'Update file successfully!!!', data: file });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+}
+
+
+module.exports = { upload , getAll, getAllById, getById, getByIdInfor, review, remove, update };
 

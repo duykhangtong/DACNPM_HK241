@@ -12,7 +12,7 @@ router.delete('/:id/delete', [authJwt.ClientVerifyToken], printOrderController.d
 router.post('/', [authJwt.ClientVerifyToken], printOrderController.create);
 router.put('/:id', [authJwt.AdminVerifyToken], printOrderController.set_state_and_endtime);
 router.get('/', [authJwt.AdminVerifyToken], printOrderController.getAll);
-router.get('/filters', [authJwt.ClientVerifyToken], printOrderController.filterByDate);
-router.get('/:id', printOrderController.getById);
+router.get('/filters', printOrderController.filterByDate);
+// router.get('/:id', printOrderController.getById);
 
 module.exports = router;
