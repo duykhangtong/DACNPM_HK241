@@ -23,6 +23,7 @@ const printOrder = new mongoose.Schema({
         ref: 'Printer'
     },
     isTransaction: { type: Boolean, default: false },
+    start_time: { type: Date, default: null },
     end_time: { type: Date, default: null },
 }, {
     timestamps: true,
