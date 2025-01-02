@@ -7,6 +7,7 @@ const pageOrderRoute = require('./page_order.route');
 const printOrderRoute = require('./print_order.route');
 const accountRoute = require('./account.route');
 const fileRoute = require('./file.route');
+const reportController = require('../controllers/report.controller');
 
 initWebRouter = (app) => {
     router.use('/auth', authenRoute);
@@ -16,6 +17,7 @@ initWebRouter = (app) => {
     router.use('/account', accountRoute);
     router.use('/file', fileRoute);
 
+    router.get('/report', reportController.report);
     router.get('/', (req, res) => {
         res.send('Hello World!!');
     })
