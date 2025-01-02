@@ -11,6 +11,17 @@ const create = (req, res, next) => {
         .catch(err => next(err));
 }
 
+const getById = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const printer = await Printer.findById(id);
+        res.status(200).json(printer);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
 const getAll = (req, res, next) => {
     Printer.find({})
         .then(printers => res.json(printers))
@@ -73,4 +84,4 @@ const filterPrinter = async (req, res, next) => {
         next(err);
     }
 }
-module.exports = { create, getAll, updateState, removeById, filterPrinter, getActive };
+module.exports = { create, getAll, updateState, removeById, filterPrinter, getActive, getById };

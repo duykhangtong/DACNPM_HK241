@@ -10,7 +10,7 @@ const create = (req, res, next) => {
     pageOrder.save()
         .then(() => res.status(200).send('Buy print page successfully!!!'))
         .then(async () => {
-            await Client.findByIdAndUpdate({ _id: client_id }, { $inc: { number_page: number_of_page }});
+            await Client.findByIdAndUpdate({ _id: client_id }, { $inc: { number_page: number_of_page } });
         })
         .catch(err => next(err));
 }
@@ -23,8 +23,8 @@ const getAll = (req, res, next) => {
 
 const getByUserId = async (req, res, next) => {
     try {
-        const user_id = req.role;
-        const pageOrders = await PageOrder.find({ user_id: user_id });
+        const client_id = req.role;
+        const pageOrders = await PageOrder.find({ client_id });
         res.status(200).json(pageOrders);
     } catch (error) {
         next(error);
