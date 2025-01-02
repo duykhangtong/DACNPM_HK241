@@ -5,7 +5,7 @@ const { default: mongoose } = require('mongoose');
 const create = async (req, res, next) => {
     const { page_size, page_orientation, sided, pages_to_printed, file_id, printer_id } = req.body;
     const client_id = req.role;
-    let total_print_pages = sided === "double-sided" ? pages_to_printed / 2 : pages_to_printed;
+    let total_print_pages = sided === "double-sided" ? Math.ceil(pages_to_printed / 2) : pages_to_printed;
     total_print_pages = page_size === "A4" ? total_print_pages : total_print_pages * 2;
     const printOrder = new PrintOrder({ page_size, page_orientation, sided, pages_to_printed, total_print_pages, client_id, file_id, printer_id });
 
@@ -29,14 +29,17 @@ const calculateTotalPrintPages = (page_size, sided, pages_per_sheet, pages_to_pr
 }
 // [PUT] /api/printOrders/:id/update
 const updateOrder = async (req, res, next) => {
+
     const { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies } = req.body;
 
     try {
-        const printerOrder = await PrintOrder.findByIdAndUpdate(req.params.id, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
+        const printerOrder = await PrintOrder.findOneAndUpdate({file_id: req.params.id}, { printer_id, page_size, page_orientation, sided, pages_per_sheet, number_of_copies }, { returnDocument: "after" });
 
         printerOrder.total_print_pages = calculateTotalPrintPages(page_size, sided, pages_per_sheet, printerOrder.pages_to_printed, number_of_copies);
 
-        res.json({
+        await printerOrder.save();
+
+        res.status(200).json({
             message: "Update print order successfully!!!",
             data: printerOrder
         })
@@ -53,6 +56,23 @@ const confirm = async (req, res, next) => {
 
         res.status(200).json({
             message: "Confirm print order successfully!!!",
+            file_id: printOrder.file_id
+        })
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+// [DELETE] /api/printOrders/:file_id/delete
+const deleteOrder = async (req, res, next) => {
+    try {
+        const printOrder = await PrintOrder.deleteOne({ file_id: req.params.id, isTransaction: false });
+        if (printOrder.deletedCount === 0) {
+            return res.status(404).json({ message: 'Print order not found.' });
+        }
+        res.json({
+            message: "Delete print order successfully!!!",
             data: printOrder
         })
     } catch (err) {
@@ -62,7 +82,7 @@ const confirm = async (req, res, next) => {
 }
 
 const getById = async (req, res, next) => {
-    const clientId = req.body.id;
+    const clientId = req.role;
     await PrintOrder.findById({ client_id: clientId, isTransaction: false })
         .then(printOrder => res.json(printOrder))
         .catch(err => next(err));
@@ -150,4 +170,4 @@ const filterSPSO = async (req, res, next) => {
         next(error);
     }
 }
-module.exports = { create, getAll, getById, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO };
+module.exports = { create, getAll, getById, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO, deleteOrder };

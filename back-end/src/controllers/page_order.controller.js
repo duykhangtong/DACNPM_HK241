@@ -3,12 +3,15 @@ const Client = require('../models/client.model');
 const { client } = require('../models');
 
 const create = (req, res, next) => {
-    const { number_of_page, state } = req.body;
+    const { number_of_page } = req.body;
     const money_amount = number_of_page * 500;
     const client_id = req.role;
     const pageOrder = new PageOrder({ number_of_page, money_amount, state, client_id });
     pageOrder.save()
         .then(() => res.status(200).send('Buy print page successfully!!!'))
+        .then(async () => {
+            await Client.findByIdAndUpdate({ _id: client_id }, { $inc: { number_page: number_of_page }});
+        })
         .catch(err => next(err));
 }
 
@@ -16,19 +19,6 @@ const getAll = (req, res, next) => {
     PageOrder.find({})
         .then(page_orders => res.json(page_orders))
         .catch(err => next(err));
-}
-
-// [PATCH] /api/pageOrders/update/:id.:number_page
-const update = async (req, res, next) => {
-    try {
-        const { id, number_page } = req.params;
-
-        const updateUser = await Client.findByIdAndUpdate({ _id: id }, { $inc: { number_page } });
-        const user = await Client.findById({ _id: id });
-        res.status(200).json(user);
-    } catch (err) {
-        next(err);
-    }
 }
 
 const getByUserId = async (req, res, next) => {
@@ -40,4 +30,4 @@ const getByUserId = async (req, res, next) => {
         next(error);
     }
 }
-module.exports = { create, getAll, update, getByUserId };
+module.exports = { create, getAll, getByUserId };

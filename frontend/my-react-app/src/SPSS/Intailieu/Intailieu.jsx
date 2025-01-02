@@ -8,16 +8,16 @@ import doc from '../../../Image/doc.png';
 import pdf from '../../../Image/pdf.png';
 import axios from 'axios';
 
-const FileConfigurationModal = ({ file, isVisible, onClose, onSave,printers }) => {
+const FileConfigurationModal = ({ file, isVisible, onClose, trigger, setTrigger, onSave,printers }) => {
   if (!isVisible) return null;
   const token = localStorage.getItem('access_token');
   const [copies, setCopies] = useState(1); // Default number of copies is 1
   // const [printers, setPrinters] = useState([]);
   const [selectedPrinter, setSelectedPrinter] = useState('');
-  const [pageRange, setPageRange] = useState('Toàn bộ');
-  const [printSide, setPrintSide] = useState('Một mặt');
+  // const [pageRange, setPageRange] = useState('Toàn bộ');
+  const [printSide, setPrintSide] = useState("double-sided");
   const [paperSize, setPaperSize] = useState('A4');
-  const [orientation, setOrientation] = useState('Dọc');
+  const [orientation, setOrientation] = useState("vertical");
   const [pagesPerSheet, setPagesPerSheet] = useState(1);
   
 
@@ -30,12 +30,14 @@ const FileConfigurationModal = ({ file, isVisible, onClose, onSave,printers }) =
       pages_per_sheet: pagesPerSheet,
       number_of_copies: copies
     };
+    console.log('printOrderData', printOrderData);
     axios
       .put(`http://localhost:80/api/printOrders/${file._id}/update`, printOrderData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         alert('Cập nhật thông số in thành công!');
+        setTrigger(!trigger);
         onSave();
       })
       .catch((error) => {
@@ -97,40 +99,40 @@ const FileConfigurationModal = ({ file, isVisible, onClose, onSave,printers }) =
                   )}
               </select>
             </label>
-            <label>
+            {/* <label>
               <span>Số trang:</span>
               <select value={pageRange} onChange={(e) => setPageRange(e.target.value)}>
                 <option>Toàn bộ</option>
                 <option>Tùy chọn</option>
               </select>
-            </label>
+            </label> */}
             <label>
               <span>Mặt in:</span>
               <select value={printSide} onChange={(e) => setPrintSide(e.target.value)}> 
-                <option>Một mặt</option>
-                <option>Hai mặt</option>
+                <option value={'one-sided'}>Một mặt</option>
+                <option value={'double-sided'}>Hai mặt</option>
               </select>
             </label>
             <label>
               <span>Khổ giấy:</span>
               <select value={paperSize} onChange={(e) => setPaperSize(e.target.value)}> 
-                <option>A4</option>
-                <option>A3</option>
+                <option value={'A4'}>A4</option>
+                <option value={'A3'}>A3</option>
               </select>
             </label>
             <label>
               <span>Hướng in:</span>
               <select value={orientation} onChange={(e) => setOrientation(e.target.value)}>
-                <option>Dọc</option>
-                <option>Ngang</option>
+                <option value={'vertical'}>Dọc</option>
+                <option value={'horizontal'}>Ngang</option>
               </select>
             </label>
             <label>
               <span>Số trang mỗi tờ:</span>
-              <select value={pagesPerSheet} onChange={(e) => setPagesPerSheet(e.target.value)}>
-                <option>1</option>
-                <option>2</option>
-                <option>4</option>
+              <select value={pagesPerSheet} onChange={(e) => setPagesPerSheet(parseInt(e.target.value, 10))}>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={4}>4</option>
               </select>
             </label>
             <label>
@@ -151,6 +153,7 @@ const PrintConfirmationModal = React.memo(function PrintConfirmationModal({
   isVisible,
   onClose,
   userPages,
+  printOrder,
   documentPages,
   onConfirm,
 }) {
@@ -175,7 +178,7 @@ const PrintConfirmationModal = React.memo(function PrintConfirmationModal({
         <div className="modal-actions-modern">
           <button
             className="btn-modern btn-confirm"
-            onClick={onConfirm}
+            onClick={() => onConfirm(printOrder)}
             disabled={remainingPages < 0}
           >
             Xác nhận
@@ -196,6 +199,8 @@ function Intailieu() {
   const [userPages, setUserPages] = useState(100);
   const [documentPages, setDocumentPages] = useState(10);
   const [isModalVisible_printAll, setIsModalVisible_printAll] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [printOrder, setPrintOrder] = useState([]);
   const [printers, setPrinters] = useState([]); // Add printers state here
   const token = localStorage.getItem("access_token");
   useEffect(() => {
@@ -203,11 +208,18 @@ function Intailieu() {
     getPossiblePrinters();
   }, []);
 
+  useEffect(() => {
+    fetchOrder();
+  }, [trigger])
+
   const fetchFilesFromServer = () => {
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }
     axios
-      .get('http://localhost:80/api/file/store',
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      .get('http://localhost:80/api/file/store', config)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setDbFiles(response.data);
@@ -236,9 +248,28 @@ function Intailieu() {
       });
   };
 
+  const fetchOrder = async () => {
+    const printOrder = await axios.get('http://localhost:80/api/printOrders/my', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    
+    if(!printOrder.data && !printOrder.data.length) {
+      return;
+    }
+    let total = 0;
+    printOrder.data.forEach((order) => {
+      total += order.total_print_pages;
+    })
+    setPrintOrder(printOrder.data);
+    setDocumentPages(total);
+  }
+
   const handleFileChange = (event) => {
     const filesToUpload = Array.from(event.target.files);
     handleUploadFiles(filesToUpload);
+    event.target.value = null;
   };
 
   const handleUploadFiles = (filesToUpload) => {
@@ -251,14 +282,13 @@ function Intailieu() {
       .post('http://localhost:80/api/file/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
         },
       })
-      .then((response) => {
-        const uploadedFiles = response.data;
-        uploadedFiles.forEach((file) => {
-          createPrintOrder(file._id);
-        });
+      .then((res) => {
+        res.data.data.forEach((file) => {
+          createPrintOrder(file);
+        })
         fetchFilesFromServer();
       })
       .catch((error) => {
@@ -266,19 +296,18 @@ function Intailieu() {
       });
   };
 
-  const createPrintOrder = (fileId) => {
+  const createPrintOrder = (item) => {
     const printOrderData = {
       printer_id: printers[0]?._id || '', // Default to the first printer
-      file_id: fileId,
-      page_size: 'Toàn bộ',
-      page_orientation:'Dọc',
-      sided: 'Một mặt',
-      pages_per_sheet: 1,
-      number_of_copies: 1,
+      file_id: item._id,
+      page_size: "A4",
+      page_orientation: "vertical",
+      sided: "double-sided",
+      pages_to_printed: item.pageNumber,
     };
 
     axios
-      .post(`http://localhost:80/api/printOrders/create`, printOrderData, {
+      .post(`http://localhost:80/api/printOrders`, printOrderData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -329,39 +358,58 @@ function Intailieu() {
 
   const handleDeleteFile = (fileId) => {
     axios
-      .patch(`http://localhost:80/api/file/${fileId}/delete`,{},
+      .delete(`http://localhost:80/api/file/${fileId}/delete`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
       .then((response) => {
-        console.log(response);
-        setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
+        if(response.status === 200) {
+          deleteOrder(fileId);
+          setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
+        }
       })
       .catch((error) => {
         console.error('Error deleting file', error);
       });
   };
 
-  const handleConfirmPrint = () => {
+  const deleteOrder = (file_id) => {
+    axios.delete(`http://localhost:80/api/printOrders/${file_id}/delete`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
+
+  const handleConfirmPrint = (orders) => {
     if (userPages >= documentPages) {
-      confirmPrintOrder();
+      orders.map((order) => {
+        confirmPrintOrder(order._id);
+      })
     } else {
       alert('Không đủ số trang để in tài liệu này!');
     }
   };
   // Added function to confirm print order
-  const confirmPrintOrder = () => {
+  const confirmPrintOrder = (id) => {
     axios
-      .post('http://localhost:80/api/printOrders/confirm', {}, {
+      .patch('http://localhost:80/api/printOrders/confirm',
+      {
+        id: id
+      }, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(() => {
+      .then((res) => {
+        res.data.file_id && handleDeleteFile(res.data.file_id);
         alert('In tài liệu thành công!');
+
         setIsModalVisible_printAll(false);
       })
       .catch((error) => {
         console.error('Error confirming print order', error);
       });
   };
+
+  
   return (
     <div className='prt-Body'>
       <div className={`tt-container_upload ${dbFiles.length > 0 ? 'active' : ''}`}>
@@ -407,6 +455,8 @@ function Intailieu() {
       </div>
       <FileConfigurationModal
         file={selectedFile}
+        trigger={trigger}
+        setTrigger={setTrigger}
         isVisible={isModalVisible}
         onClose={handleCloseModal}
         onSave={handleSaveConfiguration}
@@ -415,6 +465,7 @@ function Intailieu() {
       <PrintConfirmationModal
         isVisible={isModalVisible_printAll}
         onClose={handleCloseModal_printAll}
+        printOrder={printOrder}
         userPages={userPages}
         documentPages={documentPages}
         onConfirm={handleConfirmPrint}
