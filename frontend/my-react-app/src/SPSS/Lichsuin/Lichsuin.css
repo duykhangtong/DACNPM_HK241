@@ -142,6 +142,64 @@ select, .react-datepicker-wrapper input {
     transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
+
+/* Phần chi tiết */
+.details-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4; /* Light gray background */
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    gap: 5px;
+    transition: all 0.3s ease;
+    margin: auto;
+}
+
+.details-button{
+    background: none;
+  border: none;
+  cursor: pointer;
+  color: #1257a6;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-badge-fake {
+    font-weight: bold;
+    font-size: 0.7rem;
+    text-transform: capitalize;
+    width: 70%;
+    border-radius: 20px;
+    padding: 10px;
+    margin: auto;
+}
+
+/* Trạng thái Pending */
+.status-badge-fake.pending {
+    background-color: #f4c430; /* Gold background */
+    color: #fff; /* White text */
+}
+
+/* Trạng thái Hoàn tất */
+.status-badge-fake.completed {
+    background-color: #28a745; /* Green background */
+    color: #fff; /* White text */
+}
+
+
+
+
+
+
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;

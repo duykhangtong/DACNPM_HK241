@@ -3,6 +3,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Lichsuin.css";
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 function PrintHistoryFilter() {
   const token = localStorage.getItem("access_token");
   const [selectedPrinter, setSelectedPrinter] = useState("");
@@ -197,9 +199,13 @@ function PrintHistoryFilter() {
               <td>{history.printerName}</td>
               <td>{history.printerLocation}</td>
               <td>{new Date(history.createdAt).toLocaleDateString()}</td>
-              <td>{history.state}</td>
+              <td className="ohaha">
+                <div className={`status-badge-fake ${history.state === "pending" ? "pending" : "completed"}`}><p>{history.state}</p></div></td>
               <td>
-                  <button onClick={() => handleViewDetails(history)}>Xem chi tiết</button>
+                  <button className="details-button" onClick={() => handleViewDetails(history)}>    
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+                  <p>Xem chi tiết</p>
+                  </button>
             </td>
             </tr>
             

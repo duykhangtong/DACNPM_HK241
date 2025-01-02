@@ -31,9 +31,6 @@ function User_Dropdown() {
                     <button className={style_headerSPSS["dropdown-item"]}  onClick={() => {handleInfo();}}>
                         Thông tin
                     </button>
-                    <button className={style_headerSPSS["dropdown-item"]}>
-                        Báo cáo
-                    </button>
                     <button className={style_headerSPSS["dropdown-item"]}  onClick={() => {handleDelete();}}>
                         Đăng xuất
                     </button>

@@ -4,7 +4,6 @@
   justify-content: center;
   padding: 20px;
   gap: 20px;
-  /* background-color: #f9f9f9; */
   font-family: 'Arial', sans-serif;
 }
 
@@ -160,6 +159,106 @@ button.active {
   margin-top: 20px;
 }
 
+/* Tổng thể phần lịch sử thanh toán */
+.history-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Nút toggle hiển thị lịch sử thanh toán */
+.history-section button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.history-section button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.history-section .arrow {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+  transition: transform 0.3s ease;
+}
+
+.history-section .arrow.down {
+  transform: rotate(45deg);
+}
+
+.history-section .arrow.up {
+  transform: rotate(-135deg);
+}
+
+/* Phần lịch sử thanh toán */
+.payment-history {
+  padding: 0px 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 40px;
+}
+
+/* Tiêu đề lịch sử */
+.payment-history h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Bảng lịch sử thanh toán */
+.payment-history table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.payment-history th,
+.payment-history td {
+  text-align: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.payment-history th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.payment-history tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.payment-history tr:hover {
+  background-color: #e9e9e9;
+}
+
+.payment-history td {
+  color: #555;
+}
+
+.payment-history td:first-child {
+  font-weight: bold;
+  color: #333;
+}
 
 
 
