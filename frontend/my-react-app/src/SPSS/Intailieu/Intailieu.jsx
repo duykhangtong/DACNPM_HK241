@@ -193,7 +193,7 @@ function Intailieu() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [userPages, setUserPages] = useState(100);
-  const [documentPages, setDocumentPages] = useState(10);
+  const [documentPages, setDocumentPages] = useState(0);
   const [isModalVisible_printAll, setIsModalVisible_printAll] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const [printOrder, setPrintOrder] = useState([]);
@@ -204,6 +204,7 @@ function Intailieu() {
   }, []);
 
   useEffect(() => {
+    getUserPages();
     fetchFilesFromServer();
     fetchOrder();
   }, [trigger])
@@ -261,6 +262,17 @@ function Intailieu() {
     })
     setPrintOrder(printOrder.data);
     setDocumentPages(total);
+  }
+
+  const getUserPages = () => {
+    axios.get('http://localhost:80/api/account/client', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) => {
+      setUserPages(res.data.number_page);
+    })
   }
 
   const handleFileChange = (event) => {
@@ -394,11 +406,22 @@ function Intailieu() {
     })
   }
 
+  const handleMinusPage = (total_print_pages) => {
+    axios.put('http://localhost:80/api/account/updatePage', {
+      total_print_pages 
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
+
   const handleConfirmPrint = (orders) => {
     if (userPages >= documentPages) {
       orders.map((order) => {
         confirmPrintOrder(order._id);
       })
+      handleMinusPage(documentPages);
       setTrigger(!trigger);
       alert('Đã xác nhận in tài liệu!');
     } else {

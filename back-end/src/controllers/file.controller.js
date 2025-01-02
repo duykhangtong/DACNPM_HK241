@@ -212,7 +212,6 @@ const update = async (req, res, next) => {
 
     file.buffer = null;
     file.isTransaction = true;
-    console.log(file);
     await file.save();
     res.status(200).json({ message: 'Update file successfully!!!', data: file });
   } catch (err) {
