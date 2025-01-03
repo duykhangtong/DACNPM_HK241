@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Lichsuin.css";
 import axios from "axios";
@@ -105,7 +105,7 @@ function PrintHistoryFilter() {
 
   const handleSortToggle = () => {
     const sortedData = [...printHistoryData].sort((a, b) =>
-      sortByNearest ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt)
+      sortByNearest ? new Date(a.start_time) - new Date(b.start_time) : new Date(b.start_time) - new Date(a.start_time)
     );
     setPrintHistoryData(sortedData);
     setSortByNearest(!sortByNearest);
@@ -119,11 +119,11 @@ function PrintHistoryFilter() {
     }
 
     if (startDate) {
-      filteredData = filteredData.filter((order) => new Date(order.createdAt) >= new Date(startDate));
+      filteredData = filteredData.filter((order) => new Date(order.start_time) >= new Date(startDate));
     }
 
     if (endDate) {
-      filteredData = filteredData.filter((order) => new Date(order.createdAt) <= new Date(endDate));
+      filteredData = filteredData.filter((order) => new Date(order.start_time) <= new Date(endDate));
     }
 
     setPrintHistoryData(filteredData);
@@ -158,21 +158,19 @@ function PrintHistoryFilter() {
         </div>
         <div className="sub-filter">
           <label>Chọn ngày bắt đầu</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="dd/mm/yyyy"
-          />
+          <input type="date" onChange={(e) => {
+                const selectStart = new Date(e.target.value);
+                const utcDate = selectStart.toISOString(); 
+                setStartDate(utcDate);
+          }} />
         </div>
         <div className="sub-filter">
           <label>Chọn ngày kết thúc</label>
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="dd/mm/yyyy"
-          />
+          <input type="date" onChange={(e) => {
+              const selectEnd = new Date(e.target.value); 
+              const utcDate = selectEnd.toISOString(); 
+              setEndDate(utcDate);
+          }} />
         </div>
         <button className="filter-button" onClick={handleSortToggle}>
           {sortByNearest ? 'Ngày gần nhất' : 'Ngày xa nhất'}

@@ -23,7 +23,7 @@ const handleLogin = async (email,password,navigate) => {
         if(localStorage.getItem('role') === 'client')
             navigate('/SPSS/trangchu')
         else if(localStorage.getItem('role') === 'admin')
-            navigate('/SPSO/trangchu')
+            navigate('/SPSO/quanly')
     } catch (error) {
         alert("Login failed. Please check your credentials.");
     }

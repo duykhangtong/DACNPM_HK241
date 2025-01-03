@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./PrintHis.css";
 import axios from "axios";
@@ -51,30 +51,31 @@ function PrintHistoryFilter() {
       }
     };
 
-    const fetchFiles = async () => {
-      try {
-        const res = await axios.get('http://localhost:80/api/file', {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-          }
-        })
-
-        if(res.status === 200) {
-          setDocuments(res.data.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    fetchFiles();
+    
     fetchClients();
     fetchPrinters();
   }, []);
 
   useEffect(() => {
+    fetchFiles();
     fetchPrintOrders();
-  },[trigger])
+  },[trigger, isFiltered]);
+
+  const fetchFiles = async () => {
+    try {
+      const res = await axios.get('http://localhost:80/api/file', {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+        }
+      })
+
+      if(res.status === 200) {
+        setDocuments(res.data.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const fetchPrintOrders = async () => {
     try {
@@ -109,7 +110,7 @@ function PrintHistoryFilter() {
       );
 
       setFilteredPrintOrders(response.data);
-      setIsFiltered(true);
+      setIsFiltered(!isFiltered);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
       console.error("Error fetching filtered print orders:", error);
@@ -156,12 +157,12 @@ function PrintHistoryFilter() {
           },
         }
       );
-      setTrigger(!trigger);
       setPrintOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === orderId ? { ...order, state: "complete" } : order
-        )
-      );
+    )
+  );
+      setTrigger(!trigger);
       alert("Trạng thái đã được cập nhật thành công!");
     } catch (error) {
       console.error("Error updating print order status:", error);
