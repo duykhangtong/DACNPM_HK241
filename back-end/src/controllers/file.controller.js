@@ -60,14 +60,16 @@ const upload = async (req, res, next) => {
   }
 };
 
-//[GET] /api/file/store
 const getAll = async (req, res, next) => {
   try {
     const files = await File.find();
     if(!files || files.length === 0){
       return res.json({ message: 'There are currently no files available.'})
     }
-    res.status(200).json(files);
+    res.status(200).json({
+      message: 'Get all files successfully!!!',
+      data: files
+    });
     
   } catch(err) {
     console.log(err);

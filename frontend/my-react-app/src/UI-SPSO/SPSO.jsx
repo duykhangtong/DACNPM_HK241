@@ -7,9 +7,39 @@ import { faAngleDown,faAngleRight, faAngleLeft } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {useState, useEffect, useRef} from 'react';
 import logoBK from '../../Image/logo_BK2-removebg.png';
-import { BrowserRouter as Router, Routes, Route, NavLink, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import './SPSO.css';
+import style_headerSPSS from './SPSS.module.css'; // Import đúng CSS Module
 let user = "SPSO";
+function User_Dropdown() {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
+    const handleDelete = () => {
+        localStorage.clear();
+        navigate('/');
+    };
+    const handleInfo = () => {
+        navigate('/SPSS/info');
+    };
+    return (
+        <div className={style_headerSPSS["tt-user"]} onClick={toggleDropdown}>
+            <FontAwesomeIcon icon={faUser} className={style_headerSPSS["tt-iconuser"]} />
+            <span>{user}</span>
+            <FontAwesomeIcon icon={faAngleDown} className={style_headerSPSS["tt-angledown"]} />
+            {dropdownOpen && (
+                <div className={style_headerSPSS["dropdown-menu"]}>
+                   
+                    <button className={style_headerSPSS["dropdown-item"]}  onClick={() => {handleDelete();}}>
+                        Đăng xuất
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+}
 function Header() 
 {
     const [notificationCount, setNotificationCount] = useState(3);
@@ -25,11 +55,7 @@ function Header()
             </span>
         </div>
         <ul className="tt-nav-links">
-                <li>
-                    <NavLink to="/SPSO/trangchu" end className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
-                        Trang chủ
-                    </NavLink>
-                </li>
+               
                 <li>
                     <NavLink to="/SPSO/quanly" className={({ isActive }) => isActive ? 'tt-active' : 'tt-noactive'}>
                         Quản Lý
@@ -46,17 +72,8 @@ function Header()
                     </NavLink>
                 </li>
         </ul>
-        <div className="tt-notification">
-        <FontAwesomeIcon icon={faBell} className="tt-iconbell"/>
-        {notificationCount > 0 && (
-                <span className="notification-badge">{notificationCount}</span>
-            )}
-        </div>
-        <div className="tt-user">
-            <FontAwesomeIcon icon={faUser} className="tt-iconuser"/>
-            <span>{user}</span>
-            <FontAwesomeIcon icon={faAngleDown} className="tt-angledown"/>
-        </div>
+        
+                   <User_Dropdown />
     </div>
             <Outlet />
     </div>

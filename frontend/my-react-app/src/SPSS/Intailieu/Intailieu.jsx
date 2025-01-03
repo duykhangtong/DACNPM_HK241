@@ -374,6 +374,7 @@ function Intailieu() {
       .then((response) => {
         if(response.status === 200) {
           deleteOrder(fileId);
+          setTrigger(!trigger);
           setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
         }
       })
