@@ -20,7 +20,7 @@ function PrintHistoryFilter() {
 //Láy thông tin lịch sư in
   const handleHistoryInfo = () => {
     axios
-      .get("http://localhost:80/api/printOrders/my", {
+      .get("http://localhost:80/api/printOrders/history", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

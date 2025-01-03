@@ -81,12 +81,12 @@ const deleteOrder = async (req, res, next) => {
     }
 }
 
-// const getById = async (req, res, next) => {
-//     const clientId = req.role;
-//     await PrintOrder.findById({ client_id: clientId, isTransaction: false })
-//         .then(printOrder => res.json(printOrder))
-//         .catch(err => next(err));
-// }
+const getById = async (req, res, next) => {
+    const clientId = req.role;
+    await PrintOrder.find({ client_id: clientId, isTransaction: true })
+        .then(printOrders => res.json(printOrders))
+        .catch(err => next(err));
+}
 
 const set_state_and_endtime = async (req, res, next) => {
     const id = req.params.id;
