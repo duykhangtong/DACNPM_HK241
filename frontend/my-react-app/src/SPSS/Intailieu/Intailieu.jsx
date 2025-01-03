@@ -8,8 +8,41 @@ import doc from '../../../Image/doc.png';
 import pdf from '../../../Image/pdf.png';
 import axios from 'axios';
 
-const FileConfigurationModal = ({ file, isVisible, onClose, onSave }) => {
+const FileConfigurationModal = ({ Order, isVisible, onClose, trigger, setTrigger, onSave, printers }) => {
   if (!isVisible) return null;
+  const token = localStorage.getItem('access_token');
+  const [copies, setCopies] = useState(Order.number_of_copies); // Default number of copies is 1
+  // const [printers, setPrinters] = useState([]);
+  const [selectedPrinter, setSelectedPrinter] = useState(Order.printer_id);
+  // const [pageRange, setPageRange] = useState('Toàn bộ');
+  const [printSide, setPrintSide] = useState(Order.sided);
+  const [paperSize, setPaperSize] = useState(Order.page_size);
+  const [orientation, setOrientation] = useState(Order.page_orientation);
+  const [pagesPerSheet, setPagesPerSheet] = useState(Order.pages_per_sheet);
+  
+
+  const handleSave = () => {
+    const printOrderData = {
+      printer_id: selectedPrinter,
+      page_size: paperSize,
+      page_orientation: orientation,
+      sided: printSide,
+      pages_per_sheet: pagesPerSheet,
+      number_of_copies: copies
+    };
+    axios
+      .put(`http://localhost:80/api/printOrders/${Order._id}/update`, printOrderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        alert('Cập nhật thông số in thành công!');
+        setTrigger(!trigger);
+        onSave();
+      })
+      .catch((error) => {
+        console.error('Error updating print order', error);
+      });
+  };
 
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -56,54 +89,55 @@ const FileConfigurationModal = ({ file, isVisible, onClose, onSave }) => {
           <div className="modal-body">
             <label>
               <span>Máy in:</span>
-              <select>
-                <option>Máy in 1</option>
-                <option>Máy in 2</option>
+              <select value={selectedPrinter} onChange={(event) => setSelectedPrinter(event.target.value)}>
+                {printers.map((printer) => 
+                (<option key={printer._id} value={printer._id}>{printer.name}</option>)
+                  )}
               </select>
             </label>
-            <label>
+            {/* <label>
               <span>Số trang:</span>
-              <select>
+              <select value={pageRange} onChange={(e) => setPageRange(e.target.value)}>
                 <option>Toàn bộ</option>
                 <option>Tùy chọn</option>
               </select>
-            </label>
+            </label> */}
             <label>
               <span>Mặt in:</span>
-              <select>
-                <option>Một mặt</option>
-                <option>Hai mặt</option>
+              <select value={printSide} onChange={(e) => setPrintSide(e.target.value)}> 
+                <option value={'one-sided'}>Một mặt</option>
+                <option value={'double-sided'}>Hai mặt</option>
               </select>
             </label>
             <label>
               <span>Khổ giấy:</span>
-              <select>
-                <option>A4</option>
-                <option>A3</option>
+              <select value={paperSize} onChange={(e) => setPaperSize(e.target.value)}> 
+                <option value={'A4'}>A4</option>
+                <option value={'A3'}>A3</option>
               </select>
             </label>
             <label>
               <span>Hướng in:</span>
-              <select>
-                <option>Dọc</option>
-                <option>Ngang</option>
+              <select value={orientation} onChange={(e) => setOrientation(e.target.value)}>
+                <option value={'vertical'}>Dọc</option>
+                <option value={'horizontal'}>Ngang</option>
               </select>
             </label>
             <label>
               <span>Số trang mỗi tờ:</span>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>4</option>
+              <select value={pagesPerSheet} onChange={(e) => setPagesPerSheet(parseInt(e.target.value, 10))}>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={4}>4</option>
               </select>
             </label>
             <label>
               <span>Số lượng bản copies:</span>
-              <input type="number" min="1" max="100" />
+              <input type="number" min="1" max="100" value={copies} onChange={(e) => setCopies(e.target.value)}/>
             </label>
           </div>
           <div className="modal-footer">
-            <button onClick={onSave}>Xác nhận</button>
+            <button onClick={handleSave}>Xác nhận</button>
           </div>
         </div>
       </div>
@@ -115,6 +149,7 @@ const PrintConfirmationModal = React.memo(function PrintConfirmationModal({
   isVisible,
   onClose,
   userPages,
+  printOrder,
   documentPages,
   onConfirm,
 }) {
@@ -139,7 +174,7 @@ const PrintConfirmationModal = React.memo(function PrintConfirmationModal({
         <div className="modal-actions-modern">
           <button
             className="btn-modern btn-confirm"
-            onClick={onConfirm}
+            onClick={() => onConfirm(printOrder)}
             disabled={remainingPages < 0}
           >
             Xác nhận
@@ -158,15 +193,30 @@ function Intailieu() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [userPages, setUserPages] = useState(100);
-  const [documentPages, setDocumentPages] = useState(10);
+  const [documentPages, setDocumentPages] = useState(0);
   const [isModalVisible_printAll, setIsModalVisible_printAll] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [printOrder, setPrintOrder] = useState([]);
+  const [printers, setPrinters] = useState([]); // Add printers state here
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
-    fetchFilesFromServer();
+    getPossiblePrinters();
   }, []);
 
+  useEffect(() => {
+    getUserPages();
+    fetchFilesFromServer();
+    fetchOrder();
+  }, [trigger])
+
   const fetchFilesFromServer = () => {
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }
     axios
-      .get('http://localhost:80/api/file/store')
+      .get('http://localhost:80/api/file/store', config)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setDbFiles(response.data);
@@ -180,9 +230,55 @@ function Intailieu() {
       });
   };
 
+  const getPossiblePrinters = () => {
+    axios
+      .get('http://localhost:80/api/printers/active', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setPrinters(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching printers', error);
+      });
+  };
+
+  const fetchOrder = async () => {
+    const printOrder = await axios.get('http://localhost:80/api/printOrders/my', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    
+    if(!printOrder.data && !printOrder.data.length) {
+      return;
+    }
+    console.log(printOrder.data);
+    let total = 0;
+    printOrder.data.forEach((order) => {
+      total += order.total_print_pages;
+    })
+    setPrintOrder(printOrder.data);
+    setDocumentPages(total);
+  }
+
+  const getUserPages = () => {
+    axios.get('http://localhost:80/api/account/client', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) => {
+      setUserPages(res.data.number_page);
+    })
+  }
+
   const handleFileChange = (event) => {
     const filesToUpload = Array.from(event.target.files);
     handleUploadFiles(filesToUpload);
+    event.target.value = null;
   };
 
   const handleUploadFiles = (filesToUpload) => {
@@ -195,18 +291,46 @@ function Intailieu() {
       .post('http://localhost:80/api/file/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
         },
       })
-      .then(() => {
-        fetchFilesFromServer();
+      .then((res) => {
+        res.data.data.forEach((file) => {
+          createPrintOrder(file);
+        })
+        setTrigger(!trigger);
       })
       .catch((error) => {
         console.error('Error uploading files', error);
       });
   };
 
+  const createPrintOrder = (item) => {
+    const printOrderData = {
+      printer_id: printers[0]?._id || '', // Default to the first printer
+      file_id: item._id,
+      page_size: "A4",
+      page_orientation: "vertical",
+      sided: "double-sided",
+      pages_to_printed: item.pageNumber,
+    };
+
+    axios
+      .post(`http://localhost:80/api/printOrders`, printOrderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        console.log('Print order created successfully');
+      })
+      .catch((error) => {
+        console.error('Error creating print order', error);
+      });
+  };
+
+
   const handleEditClick = (file) => {
-    setSelectedFile(file);
+    const order = printOrder.find((order) => order.file_id === file._id);
+    setSelectedFile(order);
     setIsModalVisible(true);
   };
 
@@ -224,7 +348,12 @@ function Intailieu() {
 
   const handleViewDetails = (fileId) => {
     axios
-      .get(`http://localhost:80/api/file/${fileId}`, { responseType: 'blob' })
+      .get(`http://localhost:80/api/file/${fileId}`, {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((response) => {
         const file = new Blob([response.data], {
           type: response.headers['content-type'],
@@ -239,24 +368,85 @@ function Intailieu() {
 
   const handleDeleteFile = (fileId) => {
     axios
-      .delete(`http://localhost:80/api/file/${fileId}/delete`)
-      .then(() => {
-        setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
+      .delete(`http://localhost:80/api/file/${fileId}/delete`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+      .then((response) => {
+        if(response.status === 200) {
+          deleteOrder(fileId);
+          setDbFiles((prevFiles) => prevFiles.filter((file) => file._id !== fileId));
+        }
       })
       .catch((error) => {
         console.error('Error deleting file', error);
       });
   };
 
-  const handleConfirmPrint = () => {
+  const handleUpdateFile = (fileId) => {
+    axios.put('http://localhost:80/api/file/update', {
+      id: fileId,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) => {
+      res.status === 200 && fetchFilesFromServer();
+    })
+    .catch((err) => {
+      console.error('Error updating file', err);
+    })
+  }
+
+  const deleteOrder = (file_id) => {
+    axios.delete(`http://localhost:80/api/printOrders/${file_id}/delete`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
+
+  const handleMinusPage = (total_print_pages) => {
+    axios.put('http://localhost:80/api/account/updatePage', {
+      total_print_pages 
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
+
+  const handleConfirmPrint = (orders) => {
     if (userPages >= documentPages) {
-      alert('In tài liệu thành công!');
-      setIsModalVisible_printAll(false);
+      orders.map((order) => {
+        confirmPrintOrder(order._id);
+      })
+      handleMinusPage(documentPages);
+      setTrigger(!trigger);
+      alert('Đã xác nhận in tài liệu!');
     } else {
       alert('Không đủ số trang để in tài liệu này!');
     }
   };
+  // Added function to confirm print order
+  const confirmPrintOrder = (id) => {
+    axios
+      .patch('http://localhost:80/api/printOrders/confirm',
+      {
+        id: id
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((res) => {
+        res.data.file_id && handleUpdateFile(res.data.file_id);
+        setIsModalVisible_printAll(false);
+      })
+      .catch((error) => {
+        console.error('Error confirming print order', error);
+      });
+  };
 
+  
   return (
     <div className='prt-Body'>
       <div className={`tt-container_upload ${dbFiles.length > 0 ? 'active' : ''}`}>
@@ -301,14 +491,18 @@ function Intailieu() {
         </div>
       </div>
       <FileConfigurationModal
-        file={selectedFile}
+        Order={selectedFile}
+        trigger={trigger}
+        setTrigger={setTrigger}
         isVisible={isModalVisible}
         onClose={handleCloseModal}
         onSave={handleSaveConfiguration}
+        printers={printers}
       />
       <PrintConfirmationModal
         isVisible={isModalVisible_printAll}
         onClose={handleCloseModal_printAll}
+        printOrder={printOrder}
         userPages={userPages}
         documentPages={documentPages}
         onConfirm={handleConfirmPrint}

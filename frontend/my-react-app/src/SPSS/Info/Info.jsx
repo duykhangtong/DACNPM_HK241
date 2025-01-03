@@ -1,58 +1,96 @@
-import React from "react";
-import "./Info.css"; // Đảm bảo tạo file CSS tương ứng
-
+import React, { useEffect, useState } from "react";
+import "./Info.css";
+import axios from "axios";
 const Info = () => {
+  const [userData, setUserData] = useState({
+    full_name: "",
+    number_page: "",
+    last_login: "",
+    email: "",
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const accessToken = localStorage.getItem("access_token");
+        const response = await axios.get("http://localhost:80/api/account/client", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        const { full_name,number_page,last_login, email} = response.data;
+        setUserData({ full_name,number_page,last_login, email});
+      } catch (err) {
+        console.error("Error fetching data:", err.response?.data || err.message);
+      }
+    };
+    fetchData();
+  }, []);   
   return (
-    <div className="profile-container">
-      <div className="header-section">
-        <div className="header-bg"></div>
-        <div className="hobbies">
-          <div className="hobby">Bóng rổ</div>
-          <div className="hobby">Bơi lội</div>
-          <div className="hobby">Vua trò chơi</div>
-          <div className="hobby">UI/UX</div>
+    <div className="parent-info-container">
+    <div className="info-container">
+      <div className="info-header">
+        {/* Avatar */}
+        <div
+          alt="Avatar"
+          className="info-avatar"
+        />
+
+        {/* About Me Content */}
+        <div className="info-details">
+          <h1>About Me</h1>
+          <p className="info-role">
+            A Lead UX & UI designer based in Canada
+          </p>
+          <p className="info-description">
+            I <span className="highlight">design and develop</span> services for customers of
+            all sizes, specializing in creating stylish, modern websites, web
+            services and online stores. My passion is to design digital user
+            experiences through the bold interface and meaningful interactions.
+          </p>
+
+          {/* Personal Information */}
+          <div className="info-personal">
+            <div>
+              <p>
+                <strong className="olala">Full Name:</strong> {userData.full_name || "Loading..."}
+              </p>
+              <p>
+                <strong className="olala">E-mail:</strong> {userData.email || "Loading..."}             
+              </p>
+            </div>
+            <div>
+              <p>
+                <strong className="olala">Last Login:</strong> {userData.last_login || "Loading..."}              
+              </p>
+              <p>
+                <strong className="olala">Current Pages</strong> {userData.number_page || "Loading..."}              
+              </p>
+            </div>
+    
+          </div>
         </div>
-        <div className="profile-pic"></div>
-        <h1>Nguyễn Minh Khang</h1>
-        <p>
-          Sinh viên có <span className="highlight">đam mê</span> với thiết kế web
-        </p>
       </div>
-      <div className="info-section">
-        <h2>Thông tin cá nhân</h2>
-        <div className="info-grid">
-          <div className="info-card">
-            <span className="info-icon">👤</span>
-            <div>
-              <h3>Họ và tên</h3>
-              <p>Nguyễn Minh Khang</p>
-            </div>
-          </div>
-          <div className="info-card">
-            <span className="info-icon">🎂</span>
-            <div>
-              <h3>Ngày sinh</h3>
-              <p>13/12/2004</p>
-            </div>
-          </div>
-          <div className="info-card">
-            <span className="info-icon">📞</span>
-            <div>
-              <h3>SDT liên hệ</h3>
-              <p>0949121304</p>
-            </div>
-          </div>
-          <div className="info-card">
-            <span className="info-icon">🏠</span>
-            <div>
-              <h3>Địa chỉ thường trú</h3>
-              <p>198 Lý Thường Kiệt, Dĩ An, BD</p>
-            </div>
-          </div>
+
+      {/* Statistics */}
+      <div className="info-stats">
+        <div>
+          <h2>500</h2>
+          <p>Happy Clients</p>
+        </div>
+        <div>
+          <h2>150</h2>
+          <p>Projects Completed</p>
+        </div>
+        <div>
+          <h2>850</h2>
+          <p>Photo Captures</p>
+        </div>
+        <div>
+          <h2>190</h2>
+          <p>Telephonic Talks</p>
         </div>
       </div>
     </div>
+    </div>
   );
 };
-
 export default Info;

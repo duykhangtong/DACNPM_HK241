@@ -21,8 +21,11 @@ const getDocxPage = async(buffer) => {
 const upload = async (req, res, next) => {
   try {
     if(!req.files || req.files.length === 0){
-      return res.status(400).json({ error : 'No files were uploaded!'});
+      return res.json({ error : 'No files were uploaded!'});
     }
+
+    const client_id = req.role;
+    let fileRecords = [];
 
     const uploadPromise = req.files.map(async (file) => {
       const { originalname, mimetype, buffer } = file;
@@ -38,13 +41,18 @@ const upload = async (req, res, next) => {
         originalname,
         mimetype,
         buffer,
-        pageNumber
+        pageNumber,
+        client_id
       });
+      fileRecords.push(fileRecord);
       await fileRecord.save();
       return true;
     });
     await Promise.all(uploadPromise);
-    res.json({ message: 'Files uploaded successfully!' });
+    res.json({ 
+      message: 'Files uploaded successfully!' ,
+      data: fileRecords
+    });
   } catch(err) {
     console.log(err);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -55,7 +63,7 @@ const upload = async (req, res, next) => {
 //[GET] /api/file/store
 const getAll = async (req, res, next) => {
   try {
-    const files = await File.find({isTransaction: false});
+    const files = await File.find();
     if(!files || files.length === 0){
       return res.json({ message: 'There are currently no files available.'})
     }
@@ -67,12 +75,26 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const getAllById = async (req, res, next) => {
+  try {
+    const files = await File.find({client_id: req.role, isTransaction: false});
+    if( !files || files.length === 0 ){
+      return res.json({ message: 'No files found.' });
+    }
+
+    res.status(200).json(files);
+  } catch(err) {
+    console.log(err);
+    next(err);
+  }
+}
+
 //[GET] /api/file/:id
 const getById = async (req, res, next) => {
   try {
     const file = await File.findById(req.params.id);
     if(!file) {
-      return res.status(404).json({ message: 'File not found.' });
+      return res.json({ message: 'File not found.' });
     }
     
     const safeFilename = encodeURIComponent(file.originalname.trim());
@@ -92,6 +114,19 @@ const getById = async (req, res, next) => {
     next(err);
   }
 };
+
+const getByIdInfor = async (req, res, next) => {
+  try {
+    const file = await File.findById({_id: req.params.id});
+    if(!file) {
+      return res.status(404).json({ message: 'File not found.' });
+    }
+    res.status(200).json(file);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+}
 
 const getReviewPdfPage = async (buffer) => {
   const pdfDoc = await PDFDocument.load(buffer);
@@ -152,26 +187,39 @@ const review = async (req, res, next) => {
   }
 };
 
-// [PATCH] /api/file/:id/delete
+// [DELETE] /api/file/:id/delete
 const remove = async (req, res, next) => {
   try {
-    const deleteFile = await File.findById({_id: req.params.id, isTransaction: false});
-    if(!deleteFile) {
-      return res.status(404).json({ message: 'File not found.' });
-    }
-    deleteFile.buffer = null;
-    deleteFile.isTransaction = true;
-
-    res.status(200).json({
-      message: 'File deleted successfully.'
-    })
+    const deleteFile = await File.deleteOne({_id: req.params.id, isTransaction: false});
     
+    const check = await File.findById(deleteFile._id);
+    if(!check){
+      return res.status(200).json({ message: 'File deleted successfully.' });
+    }
+    res.status(400).json({ message: 'Failed to delete file.' }); 
   } catch(err) {
     console.log(err);    
     next(err);
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const file = await File.findById(req.body.id);
+    if(!file) {
+      return res.status(404).json({ message: 'File not found.' });
+    }
 
-module.exports = { upload , getAll, getById, review, remove };
+    file.buffer = null;
+    file.isTransaction = true;
+    await file.save();
+    res.status(200).json({ message: 'Update file successfully!!!', data: file });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+}
+
+
+module.exports = { upload , getAll, getAllById, getById, getByIdInfor, review, remove, update };
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const printOrder = new mongoose.Schema({
     page_size: { type: String, enum: ['A3', 'A4'] },
-    page_orientation: { type: String, enum: ["landscape", "portrait"] },
+    page_orientation: { type: String, enum: ["vertical", "horizontal"] },
     sided: { type: String, enum: ["one-sided", "double-sided"] },
     scale: { type: Number, default: 1 },
     pages_to_printed: Number,
@@ -23,6 +23,7 @@ const printOrder = new mongoose.Schema({
         ref: 'Printer'
     },
     isTransaction: { type: Boolean, default: false },
+    start_time: { type: Date, default: null },
     end_time: { type: Date, default: null },
 }, {
     timestamps: true,
