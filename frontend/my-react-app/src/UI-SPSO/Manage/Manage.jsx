@@ -26,7 +26,6 @@ const addPrinter = (printerDetails) => {
 
 const deletePrinter = (printerId) => {
   const url = `http://localhost:80/api/printers/${printerId}`;
-  console.log(url);
   return axios.delete(url, {
     headers: {
       "Content-Type": "application/json",
@@ -56,15 +55,7 @@ function Manage() {
     room: "",
   });
   const [printers, setPrinters] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const printersPerPage = 6;
-  const indexOfLastPrinter = currentPage * printersPerPage;
-  const indexOfFirstPrinter = indexOfLastPrinter - printersPerPage;
-  const currentPrinters = printers.slice(
-    indexOfFirstPrinter,
-    indexOfLastPrinter
-  );
-  const totalPages = Math.ceil(printers.length / printersPerPage);
+  
   useEffect(() => {
     loadPrinters();
   }, []);
@@ -119,16 +110,17 @@ function Manage() {
       console.error("Error deleting printer:", error);
     }
   };
+  
   const handleActivate = async () => {
     try {
       await updatePrinterState(printerDetails._id, true);
-
       setPrinterDetails((prevDetails) => ({ ...prevDetails, state: true }));
       loadPrinters();
     } catch (error) {
       console.error("Error updating printer state:", error);
     }
   };
+
   const handleDisable = async () => {
     try {
       await updatePrinterState(printerDetails._id, false);
@@ -138,7 +130,6 @@ function Manage() {
       console.error("Error updating printer state:", error);
     }
   };
-  console.log(printerDetails);
 
   return (
     <div className="managePage">
@@ -230,7 +221,7 @@ function Manage() {
                 onChange={(e) =>
                   setPrinterDetails({
                     ...printerDetails,
-                    state: e.target.value,
+                    state: e.target.value === "true",
                   })
                 }
                 required
@@ -291,7 +282,7 @@ function Manage() {
           </div>
         )}
         <div className="printer-list">
-          {currentPrinters.map((printer, index) => (
+          {printers.map((printer, index) => (
             <div key={printer._id} className="printer-item">
               <img
                 src="https://phucanhcdn.com/media/product/23196_may_in_canon_lbp6230dn_03.jpg"
@@ -300,12 +291,11 @@ function Manage() {
               />
 
               <div className="printerChoice">
-                {" "}
                 <button
                   className="btn-primary"
                   onClick={() => handlePrinterClick(index)}
                 >
-                  Máy in {indexOfFirstPrinter + index + 1}
+                  Máy in {index + 1}
                 </button>
                 <button
                   className="btn-delete"
@@ -316,21 +306,6 @@ function Manage() {
               </div>
             </div>
           ))}
-          <div className="pagination">
-            {" "}
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index + 1}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-                onClick={() => setCurrentPage(index + 1)}
-              >
-                {" "}
-                {index + 1}{" "}
-              </button>
-            ))}{" "}
-          </div>
         </div>
       </main>
       <footer className="footer">
