@@ -173,4 +173,4 @@ const filterSPSO = async (req, res, next) => {
         next(error);
     }
 }
-module.exports = { create, getAll, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO, deleteOrder };
+module.exports = { create, getAll, set_state_and_endtime, getByUserId, filterByDate, updateOrder, confirm, filterSPSO, deleteOrder, getById };
