@@ -1,4 +1,4 @@
-import logoBK from '../../../Image/logo_BK2-removebg.png';
+    import logoBK from '../../../Image/logo_BK2-removebg.png';
 import React, {useState, useEffect, useRef} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser} from '@fortawesome/free-solid-svg-icons';
