@@ -15,6 +15,7 @@ function PrintHistoryFilter() {
   const [printOrders, setPrintOrders] = useState([]);
   const [filteredPrintOrders, setFilteredPrintOrders] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,81 +51,64 @@ function PrintHistoryFilter() {
       }
     };
 
-    const fetchDocuments = async () => {
+    const fetchFiles = async () => {
       try {
-        const response = await axios.get("http://localhost:80/api/documents", {
+        const res = await axios.get('http://localhost:80/api/file', {
           headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setDocuments(response.data);
-      } catch (error) {
-        console.error("Error fetching document data:", error);
-      }
-    };
-
-    const fetchPrintOrders = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:80/api/printOrders",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
           }
-        );
-        setPrintOrders(response.data);
-      } catch (error) {
-        console.error("Error fetching print orders:", error);
-      }
-    };
+        })
 
+        if(res.status === 200) {
+          setDocuments(res.data.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchFiles();
     fetchClients();
     fetchPrinters();
-    fetchDocuments();
-    fetchPrintOrders();
   }, []);
+
+  useEffect(() => {
+    fetchPrintOrders();
+  },[trigger])
+
+  const fetchPrintOrders = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.get(
+        "http://localhost:80/api/printOrders",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setPrintOrders(response.data);
+    } catch (error) {
+      console.error("Error fetching print orders:", error);
+    }
+  };
 
   const filterPrintOrders = async () => {
     try {
       const response = await axios.get(
         "http://localhost:80/api/printOrders/filterSPSO",
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
           params: {
             client_id: selectedClient,
             printer_id: selectedPrinter,
-            start_date: startDate
-              ? startDate.toISOString().split("T")[0]
-              : null,
-            end_date: endDate ? endDate.toISOString().split("T")[0] : null,
+            startDate,
+            endDate
           },
         }
       );
 
-      const filteredData = response.data.filter((order) => {
-        const orderStartDate = new Date(order.createdAt)
-          .toISOString()
-          .split("T")[0];
-        const orderEndDate = order.end_date
-          ? new Date(order.end_date).toISOString().split("T")[0]
-          : null;
-
-        const isStartDateMatch = startDate
-          ? orderStartDate > startDate.toISOString().split("T")[0]
-          : true;
-        const isEndDateMatch = endDate
-          ? orderEndDate <= endDate.toISOString().split("T")[0]
-          : true;
-
-        return isStartDateMatch && isEndDateMatch;
-      });
-
-      setFilteredPrintOrders(filteredData);
+      setFilteredPrintOrders(response.data);
       setIsFiltered(true);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
@@ -142,10 +126,9 @@ function PrintHistoryFilter() {
     return printer ? printer.name : "Unknown";
   };
 
-  const getDocumentNameById = (id) => {
-    const document = documents.find((d) => d._id === id);
-    return document ? document.name : "Unknown";
-  };
+  const getNameFileById = (id) => {
+    return documents.find((file) => file._id === id)?.originalname || "Unknown";
+  }
 
   const getPrinterLocationById = (id) => {
     const printer = printers.find((p) => p._id === id);
@@ -160,10 +143,9 @@ function PrintHistoryFilter() {
 
   const updatePrintOrderStatus = async (orderId) => {
     try {
-      const token = localStorage.getItem("token");
-      console.log(token);
+      const token = localStorage.getItem("access_token");
       await axios.put(
-        `http://localhost:80/api/printOrders/:{orderId}`,
+        `http://localhost:80/api/printOrders/${orderId}`,
         {
           state: "complete",
         },
@@ -174,6 +156,7 @@ function PrintHistoryFilter() {
           },
         }
       );
+      setTrigger(!trigger);
       setPrintOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === orderId ? { ...order, state: "complete" } : order
@@ -235,21 +218,19 @@ function PrintHistoryFilter() {
             </div>
             <div className="sub-filter">
               <label>Chọn ngày bắt đầu</label>
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/mm/yyyy"
-              />
+              <input type="date" onChange={(e) => {
+                const selectStart = new Date(e.target.value);
+                const utcDate = selectStart.toISOString(); 
+                setStartDate(utcDate);
+              }} />
             </div>
             <div className="sub-filter">
               <label>Chọn ngày kết thúc</label>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/mm/yyyy"
-              />
+              <input type="date" onChange={(e) => {
+                const selectEnd = new Date(e.target.value); 
+                const utcDate = selectEnd.toISOString(); 
+                setEndDate(utcDate);
+              }} />
             </div>
           </div>
           <button onClick={filterPrintOrders}>Xác nhận</button>
@@ -278,7 +259,7 @@ function PrintHistoryFilter() {
                   const location = getPrinterLocationById(order.printer_id);
                   return (
                     <tr key={order._id}>
-                      <td>{getDocumentNameById(order.file_id)}</td>
+                      <td>{getNameFileById(order.file_id)}</td>
                       <td>{getClientNameById(order.client_id)}</td>
                       <td>{getPrinterNameById(order.printer_id)}</td>
                       <td>{location.campus}</td>
@@ -286,13 +267,13 @@ function PrintHistoryFilter() {
                       <td>{location.room}</td>
                       <td>{order.page_size}</td>
                       <td>
-                        {order.createdAt
-                          ? new Date(order.createdAt).toLocaleString()
+                        {order.start_time
+                          ? new Date(order.start_time).toLocaleString()
                           : "Unknown"}
                       </td>
                       <td>
-                        {order.end_date
-                          ? new Date(order.end_date).toLocaleString()
+                        {order.end_time
+                          ? new Date(order.end_time).toLocaleString()
                           : "Unknown"}
                       </td>
                       <td>{order.total_print_pages}</td>

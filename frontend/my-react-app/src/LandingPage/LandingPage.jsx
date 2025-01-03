@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHouse, faChevronDown, faEnvelope, faLock  } from '@fortawesome/free-solid-svg-icons';
 import './LandingPage.css';
 import ĐangNhap from '../Login/Login'
-let user = 'Nguyễn Minh Khang';
+let user = 'MY HCMUT CONNECTION';
 function Header()
 {
     return(

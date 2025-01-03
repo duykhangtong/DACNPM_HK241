@@ -24,7 +24,6 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
     "react-spinners": "^0.14.1",
-    "react-toastify": "^11.0.2",
     "toastify": "^2.0.1"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "react-toastify": "^11.0.2",
     "vite": "^5.4.1"
   }
 }
