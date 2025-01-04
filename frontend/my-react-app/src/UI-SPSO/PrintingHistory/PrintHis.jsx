@@ -54,12 +54,14 @@ function PrintHistoryFilter() {
     
     fetchClients();
     fetchPrinters();
-  }, []);
-
-  useEffect(() => {
     fetchFiles();
     fetchPrintOrders();
-  },[trigger, isFiltered]);
+  }, []);
+
+  // useEffect(() => {
+  //   fetchFiles();
+  //   fetchPrintOrders();
+  // },[trigger, isFiltered]);
 
   const fetchFiles = async () => {
     try {
@@ -109,7 +111,7 @@ function PrintHistoryFilter() {
         }
       );
 
-      setFilteredPrintOrders(response.data);
+      setPrintOrders(response.data);
       setIsFiltered(!isFiltered);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
