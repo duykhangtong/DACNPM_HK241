@@ -186,7 +186,7 @@ function PrintHistoryFilter() {
   return (
     <>
       <main>
-        <div className="his-container">
+        <div className="his-container1">
           <h2>Lịch sử in</h2>
           <div className="filter-container">
             <div className="sub-filter">
