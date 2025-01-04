@@ -236,7 +236,7 @@ function PrintHistoryFilter() {
               }} />
             </div>
           </div>
-          <button onClick={filterPrintOrders}>Xác nhận</button>
+          <button className="confirm" onClick={filterPrintOrders}>Xác nhận</button>
           {currentOrders.length === 0 ? (
             <p>Không có đơn in nào</p>
           ) : (
