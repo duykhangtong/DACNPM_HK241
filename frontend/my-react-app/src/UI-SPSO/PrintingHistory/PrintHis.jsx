@@ -51,17 +51,14 @@ function PrintHistoryFilter() {
       }
     };
 
-    
     fetchClients();
     fetchPrinters();
-    fetchFiles();
-    fetchPrintOrders();
   }, []);
 
-  // useEffect(() => {
-  //   fetchFiles();
-  //   fetchPrintOrders();
-  // },[trigger, isFiltered]);
+  useEffect(() => {
+    fetchFiles();
+    fetchPrintOrders();
+  },[trigger, isFiltered]);
 
   const fetchFiles = async () => {
     try {
@@ -111,7 +108,7 @@ function PrintHistoryFilter() {
         }
       );
 
-      setPrintOrders(response.data);
+      setFilteredPrintOrders(response.data);
       setIsFiltered(!isFiltered);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
@@ -172,7 +169,7 @@ function PrintHistoryFilter() {
     }
   };
 
-  const ordersToDisplay = isFiltered ? filteredPrintOrders : printOrders;
+  const ordersToDisplay = filteredPrintOrders? filteredPrintOrders:printOrders;
 
   // Tính toán các đơn in cần hiển thị cho trang hiện tại
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -192,7 +189,7 @@ function PrintHistoryFilter() {
             <div className="sub-filter">
               <label>Chọn tên</label>
               <select
-                value={selectedClient}
+                value={selectedClient? selectedClient: ""}
                 onChange={(e) => setSelectedClient(e.target.value)}
               >
                 <option value="">Chọn tên sinh viên</option>
@@ -207,7 +204,7 @@ function PrintHistoryFilter() {
             <div className="sub-filter">
               <label>Chọn máy in</label>
               <select
-                value={selectedPrinter}
+                value={selectedPrinter? selectedPrinter: ""}
                 onChange={(e) => setSelectedPrinter(e.target.value)}
               >
                 <option value="">Chọn máy in</option>
