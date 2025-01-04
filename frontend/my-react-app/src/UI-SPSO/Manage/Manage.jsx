@@ -105,6 +105,7 @@ function Manage() {
   const handleDeletePrinter = async (printerId) => {
     try {
       await deletePrinter(printerId);
+      setShowDetails(false);
       loadPrinters();
     } catch (error) {
       console.error("Error deleting printer:", error);

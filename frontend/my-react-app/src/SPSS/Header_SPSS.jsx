@@ -1,15 +1,15 @@
 import { faBell, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faAngleDown, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import logoBK from '../../Image/logo_BK2-removebg.png';
 import { BrowserRouter as Router, Routes, Route, NavLink, Outlet,useNavigate } from 'react-router-dom';
 import style_headerSPSS from './SPSS.module.css'; // Import đúng CSS Module
-
-let user = "NguyenKhang";
-
+import { use } from 'react';
+import axios from 'axios';
 function User_Dropdown() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [userName,setUserName] = useState("Loading...");
     const navigate = useNavigate();
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -21,10 +21,25 @@ function User_Dropdown() {
     const handleInfo = () => {
         navigate('/SPSS/info');
     };
+    const fetchData = async () => {
+        try {
+          const accessToken = localStorage.getItem("access_token");
+          const response = await axios.get("http://localhost:80/api/account/client", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          setUserName(response.data.full_name);
+        } catch (err) {
+          console.error("Error fetching data:", err.response?.data || err.message);
+        }
+      };
+      useEffect(() => {
+        fetchData();
+      }
+    ,[]);
     return (
         <div className={style_headerSPSS["tt-user"]} onClick={toggleDropdown}>
             <FontAwesomeIcon icon={faUser} className={style_headerSPSS["tt-iconuser"]} />
-            <span>{user}</span>
+            <span>{userName}</span>
             <FontAwesomeIcon icon={faAngleDown} className={style_headerSPSS["tt-angledown"]} />
             {dropdownOpen && (
                 <div className={style_headerSPSS["dropdown-menu"]}>
