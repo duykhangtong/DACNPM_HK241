@@ -40,9 +40,11 @@ function PrintHistoryFilter() {
               printerName: printerNames[index].name,
               printerLocation: `${printerNames[index].campus} - ${printerNames[index].building} - ${printerNames[index].room}`
             }));
+            updatedPrintOrders.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
             setAllPrintHistoryData(updatedPrintOrders);
             setPrintHistoryData(updatedPrintOrders);
             setLoading(false);
+           
           });
         });
       })

@@ -1,15 +1,7 @@
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
-.his-container {
+.his-container1 {
     width: 90%;
     max-width: 1200px;
     margin: auto;
@@ -19,7 +11,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.his-container h2 {
+.his-container1 h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
@@ -61,7 +53,7 @@ body {
     outline: none;
 }
 
-button {
+.confirm{
     padding: 10px 15px;
     background-color: #1257a6;
     color: white;
@@ -71,7 +63,7 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.confirm:hover {
     background-color: #0e4e8c;
 }
 
