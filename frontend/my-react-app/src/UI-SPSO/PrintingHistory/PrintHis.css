@@ -61,7 +61,7 @@ body {
     outline: none;
 }
 
-button {
+.confirm button {
     padding: 10px 15px;
     background-color: #1257a6;
     color: white;

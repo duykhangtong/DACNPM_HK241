@@ -54,12 +54,14 @@ function PrintHistoryFilter() {
     
     fetchClients();
     fetchPrinters();
-  }, []);
-
-  useEffect(() => {
     fetchFiles();
     fetchPrintOrders();
-  },[trigger, isFiltered]);
+  }, []);
+
+  // useEffect(() => {
+  //   fetchFiles();
+  //   fetchPrintOrders();
+  // },[trigger, isFiltered]);
 
   const fetchFiles = async () => {
     try {
@@ -109,7 +111,7 @@ function PrintHistoryFilter() {
         }
       );
 
-      setFilteredPrintOrders(response.data);
+      setPrintOrders(response.data);
       setIsFiltered(!isFiltered);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
@@ -234,7 +236,7 @@ function PrintHistoryFilter() {
               }} />
             </div>
           </div>
-          <button onClick={filterPrintOrders}>Xác nhận</button>
+          <button className="confirm" onClick={filterPrintOrders}>Xác nhận</button>
           {currentOrders.length === 0 ? (
             <p>Không có đơn in nào</p>
           ) : (
