@@ -8,7 +8,7 @@ import axios from "axios";
 function Report() {
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const years = Array.from({ length: 10 }, (_, i) => 2025 - i);
-
+  const [totalData, setTotalData] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [statisticsData, setStatisticsData] = useState([]);
@@ -19,13 +19,16 @@ function Report() {
       const response = await axios.get("http://localhost:80/api/report", {
         params: { month, year },
       });
+      console.log(response.data);
       const statisticsArray = Object.entries(response.data)
         .filter(([key]) => key !== 'total')
         .map(([, value]) => value);
       setStatisticsData(statisticsArray);
+      setTotalData(response.data.total);
     } catch (error) {
       console.error("Error fetching report data:", error);
       setStatisticsData([]);
+      setTotalData(null);
     }
   };
 
@@ -150,6 +153,14 @@ function Report() {
                       </tr>
                     ))
                   )}
+                  {totalData && (
+                    <tr className="total-row">
+                      <td colSpan="2"><strong>Tổng</strong></td>
+                      <td>{totalData.total_amount}</td>
+                      <td>{totalData.total_A3}</td>
+                      <td>{totalData.total_A4}</td>
+                    </tr>
+                 )} 
                 </tbody>
               </table>
                <button className="cancel" onClick={handleBackClick}>
