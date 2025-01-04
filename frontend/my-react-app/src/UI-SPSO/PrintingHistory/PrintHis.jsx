@@ -58,7 +58,7 @@ function PrintHistoryFilter() {
   useEffect(() => {
     fetchFiles();
     fetchPrintOrders();
-  },[trigger, isFiltered]);
+  },[trigger]);
 
   const fetchFiles = async () => {
     try {
@@ -109,7 +109,8 @@ function PrintHistoryFilter() {
       );
 
       setFilteredPrintOrders(response.data);
-      setIsFiltered(!isFiltered);
+      setTrigger(!trigger);
+      setIsFiltered(true);
       setCurrentPage(1); // Reset trang khi lọc
     } catch (error) {
       console.error("Error fetching filtered print orders:", error);
@@ -156,11 +157,6 @@ function PrintHistoryFilter() {
           },
         }
       );
-      setPrintOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === orderId ? { ...order, state: "complete" } : order
-    )
-  );
       setTrigger(!trigger);
       alert("Trạng thái đã được cập nhật thành công!");
     } catch (error) {
@@ -169,7 +165,7 @@ function PrintHistoryFilter() {
     }
   };
 
-  const ordersToDisplay = filteredPrintOrders? filteredPrintOrders:printOrders;
+  const ordersToDisplay = isFiltered ? filteredPrintOrders : printOrders;
 
   // Tính toán các đơn in cần hiển thị cho trang hiện tại
   const indexOfLastOrder = currentPage * ordersPerPage;
