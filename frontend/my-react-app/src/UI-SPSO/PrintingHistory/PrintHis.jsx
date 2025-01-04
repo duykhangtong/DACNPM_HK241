@@ -88,6 +88,7 @@ function PrintHistoryFilter() {
           },
         }
       );
+      response.data.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
       setPrintOrders(response.data);
     } catch (error) {
       console.error("Error fetching print orders:", error);
@@ -107,7 +108,7 @@ function PrintHistoryFilter() {
           },
         }
       );
-
+      response.data.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
       setFilteredPrintOrders(response.data);
       setTrigger(!trigger);
       setIsFiltered(true);
